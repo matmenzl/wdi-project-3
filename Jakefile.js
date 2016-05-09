@@ -77,12 +77,14 @@ var cities = [
     latitude: -15.837508,
     longitude: -47.872925,
     continent: "SAmerica"
+  },
+  {
+    name: "Muscat",
+    latitude: 23.497885, 
+    longitude: 58.502197,
+    continent: "Asia"
   }
 ]
-
-
-
-var url = 'https://api.forecast.io/forecast/22d9a931630b36afe6057543b3031a61/';
 
 function seedCities() {
   City.collection.drop();
@@ -94,13 +96,17 @@ function seedCities() {
   })
 }
 
+var url = 'https://api.forecast.io/forecast/22d9a931630b36afe6057543b3031a61/';
+
 function crawlCities() {
   City.find({}, function(err, cities) {
     cities.forEach(function(city) {
       rp(url + city.latitude + "," + city.longitude)
         .then(function(data) {
           var parsedData = JSON.parse(data);
+          // Get the daily data
           var cityData = parsedData.daily.data;
+          
           city.sunny = true;
           i = 0;
           while (city.sunny && i < cityData.length) {
@@ -108,6 +114,7 @@ function crawlCities() {
             i++;
           }
           console.log(cityData[i-1].icon + " | " + city.sunny);
+          
           city.save();
         })
         .catch(function (err) {

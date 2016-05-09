@@ -5,7 +5,8 @@ var citySchema = mongoose.Schema({
   continent: String,
   latitude: Number,
   longitude: Number,
-  sunny: Boolean
+  sunny: Boolean,
+  icon: String
 });
 
 module.exports = mongoose.model("City", citySchema);
