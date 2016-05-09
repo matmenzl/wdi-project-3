@@ -50,6 +50,10 @@ app.use(function (err, req, res, next) {
 
 app.use("/api", routes);
 
+app.use(express.static(__dirname + '/public'));
+app.get('*', function(req, res){
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 app.listen(config.port, function(){
   console.log("Express is alive and kicking on port:", config.port);
