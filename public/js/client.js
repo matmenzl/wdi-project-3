@@ -5,11 +5,11 @@ SunApp.getToken = function(){
 }
 
 SunApp.setToken = function(token){
-  return window.localStorage.setItem("token", token);
+  return window.localStorage.setItem('token', token)
 }
 
-SunApp.saveTokenIfPresent = function(data) {
-  if (data.token) return this.setToken(data.token);
+SunApp.saveTokenIfPresent = function(data){
+  if (data.token) return this.setToken(data.token)
   return false;
 }
 
@@ -32,7 +32,6 @@ SunApp.ajaxRequest = function(method, url, data){
   });
 }
 
-
 SunApp.getTemplate = function(tpl, data){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
@@ -46,28 +45,30 @@ SunApp.getTemplate = function(tpl, data){
   })
 }
 
-
 SunApp.changePage = function(){
   event.preventDefault();
   var tpl = ($(this).data("template"));
-  SunApp.getTemplate(tpl, null);
+  return SunApp.getTemplate(tpl, null);
 }
-
 
 SunApp.submitForm = function(){
   event.preventDefault();
 
   var method = $(this).attr('method');
-  var url    = $(this).attr("action")
+  var url    = $(this).attr("action");
   var data   = $(this).serialize();
+
   return SunApp.ajaxRequest(method, url, data);
 }
 
 SunApp.getUsers = function(){
-    return SunApp.ajaxRequest("get", "/users");
+  return SunApp.ajaxRequest("get", "/users");
 }
+
 SunApp.initialize = function(){
-  $("form").on("submit", this.submitForm);
+  // $("form").on("submit", this.submitForm);
+  $("main").on("submit", "form", this.submitForm);
+  
   $("#getUsers").on("click", this.getUsers);
   $("header nav a").on("click", this.changePage);
 }
@@ -75,3 +76,4 @@ SunApp.initialize = function(){
 $(function(){
   SunApp.initialize();
 })
+
