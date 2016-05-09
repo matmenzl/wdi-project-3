@@ -65,6 +65,42 @@ SunApp.getUsers = function(){
   return SunApp.ajaxRequest("get", "/users");
 }
 
+SunApp.displayUsers = function(data, user){
+  // hideErrors();
+  // hideUsers();
+  return $.each(data.users, function(index) {
+    $(".users").prepend('<div class="media">' +
+                          '<div class="media-left">' +
+                            '<a href="#">' +
+                              '<img class="media-object" src="' + user.image +'">' +
+                            '</a>' +
+                          '</div>' +
+                          '<div class="media-body">' +
+                            '<h4 class="media-heading">@' + user.username + '</h4>' +
+                            '<p>' + user.firstName + '</p>'+
+                          '</div>' +
+                        '</div>');
+  });
+}
+
+SunApp.logout = function(){
+  event.preventDefault();
+  removeToken();
+  return loggedOutState();
+}
+
+SunApp.loggedInState = function(){
+  // $("section, .logged-out").hide();
+  // $(".users, .logged-in").show();
+  // return getUsers();
+}
+
+SunApp.loggedOutState = function(){
+  // $("section, .logged-in").hide();
+  // $("#register, .logged-out").show();
+  // return hideUsers();
+}
+
 SunApp.initialize = function(){
   // $("form").on("submit", this.submitForm);
   $("main").on("submit", "form", this.submitForm);
