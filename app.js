@@ -5,6 +5,8 @@ var methodOverride = require("method-override");
 var bodyParser     = require("body-parser");
 var mongoose       = require("mongoose");
 var passport       = require("passport");
+var expressJWT     = require("express-jwt");
+var routes         = require("./config/routes");
 
 var config         = require("./config/config");
 var app            = express();
@@ -25,6 +27,25 @@ app.use(methodOverride(function(req, res){
     return method;
   }
 }));
+
+app.use(passport.initialize());
+
+app.use('/api', expressJWT({ secret: config.secret })
+  .unless({
+    path: [
+      { url: '/api/login', methods: ['POST'] },
+      { url: '/api/register', methods: ['POST'] }
+    ]
+}));
+  
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({message: 'Unauthorized request.'});
+  }
+  next();
+});
+
+app.use("/api", routes);
 
 
 app.listen(config.port, function(){
