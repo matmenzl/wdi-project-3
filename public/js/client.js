@@ -69,29 +69,10 @@ SunApp.getUsers = function(){
 }
 
 SunApp.initialize = function(){
-  // $("form").on("submit", this.submitForm);
   $("main").on("submit", "form", this.submitForm);
-  
   $("#getUsers").on("click", this.getUsers);
   $("header nav a").on("click", this.changePage);
-  // $("#world-map").on("click", this.createWorldMap);
 }
-
-
-// ***** MAP FUNCTION *****
-
-SunApp.createWorldMap = function() {
-  this.canvas = document.getElementById("map-canvas");
-
-  var mapOptions = {
-    zoom: 12,
-    center: new google.maps.LatLng(51.506178, -0.088369),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }
-
-  this.map = new google.maps.Map(this.canvas, mapOptions);
-}
-
 
 $(function(){
   SunApp.initialize();
