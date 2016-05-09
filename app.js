@@ -7,6 +7,7 @@ var mongoose       = require("mongoose");
 var passport       = require("passport");
 var expressJWT     = require("express-jwt");
 var routes         = require("./config/routes");
+var cors           = require("cors");
 
 var config         = require("./config/config");
 var app            = express();
@@ -29,6 +30,8 @@ app.use(methodOverride(function(req, res){
 }));
 
 app.use(passport.initialize());
+
+app.use(cors());
 
 app.use('/api', expressJWT({ secret: config.secret })
   .unless({
