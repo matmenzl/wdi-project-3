@@ -7,12 +7,13 @@
   <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/vendor/underscore/underscore-min.js"></script>
   <script type="text/javascript" src="/js/client.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxM36DxD-TmmCuWMML0UXBVSirOUkF42Q" charset="utf-8"></script>
 </head>
 <body>
   <header>
     <nav>
       <ul>
-        <li><a href="/" data-template="home">Home</a></li>
+        <li><a id="world-map" href="/" data-template="home">Home</a></li>
         <li><a href="/register" data-template="register">Register</a></li>
         <li><a href="/login" data-template="login">Login</a></li>
       </ul>
@@ -20,7 +21,7 @@
   </header>
   <button id="getUsers">Get Users</button>
   <main class="container">
-  <h1>Home</h1>
+    <h1>Home</h1>
   </main>
 </body>
 </html>

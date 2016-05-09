@@ -1,5 +1,7 @@
 var SunApp = SunApp || {};
 
+// ***** USER AUTHENTICATION *****
+
 SunApp.getToken = function(){
   return window.localStorage.getItem("token")
 }
@@ -41,7 +43,8 @@ SunApp.getTemplate = function(tpl, data){
   }).done(function(templateData){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
-    $("main").empty().append(compiledTemplate);
+    $("main").html(compiledTemplate);
+    if ($("#map-canvas").length > 0) SunApp.createWorldMap();
   })
 }
 
@@ -71,7 +74,24 @@ SunApp.initialize = function(){
   
   $("#getUsers").on("click", this.getUsers);
   $("header nav a").on("click", this.changePage);
+  // $("#world-map").on("click", this.createWorldMap);
 }
+
+
+// ***** MAP FUNCTION *****
+
+SunApp.createWorldMap = function() {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 12,
+    center: new google.maps.LatLng(51.506178, -0.088369),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+
+  this.map = new google.maps.Map(this.canvas, mapOptions);
+}
+
 
 $(function(){
   SunApp.initialize();
