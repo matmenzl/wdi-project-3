@@ -35,7 +35,7 @@ userSchema.path('passwordHash')
       if (!this._password){
         this.invalidate('password', 'Password is required');
       }
-      if (this.password.length < 6){
+      if (this._password.length < 6){
         this.invalidate('password', 'Password must be longer than 6 characters.')
       }
       if (this._password !== this._passwordConfirmation){
