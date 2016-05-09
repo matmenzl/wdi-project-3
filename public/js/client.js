@@ -32,7 +32,6 @@ SunApp.ajaxRequest = function(method, url, data){
   });
 }
 
-
 SunApp.getTemplate = function(tpl, data){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
@@ -46,13 +45,11 @@ SunApp.getTemplate = function(tpl, data){
   })
 }
 
-
 SunApp.changePage = function(){
   event.preventDefault();
   var tpl = ($(this).data("template"));
   SunApp.getTemplate(tpl, null);
 }
-
 
 SunApp.submitForm = function(){
   event.preventDefault();
