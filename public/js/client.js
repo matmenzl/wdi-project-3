@@ -74,6 +74,44 @@ SunApp.initialize = function(){
   $("header nav a").on("click", this.changePage);
 }
 
+SunApp.createMarkerForCity = function(city, timeout) {
+  var self   = this;
+  var latlng = new google.maps.LatLng(city.latitude, city.longitude);
+  window.setTimeout(function() {
+    var marker = new google.maps.Marker({
+      position: latlng,
+      map: self.map,
+      icon: "./images/marker.png"
+    })
+  }, timeout)
+}
+
+SunApp.loopThroughCities = function(data) {
+  return $.each(data.cities, function(i, city) {
+    SunApp.createMarkerForCity(city, i*10);
+  })
+}
+
+SunApp.getCities = function() {
+  var self = this;
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:3000/cities"
+  }).done(self.loopThroughCities);
+}
+
+SunApp.createWorldMap = function() {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 12,
+    center: new google.maps.LatLng(51.506178, -0.088369),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  this.map = new google.maps.Map(this.canvas, mapOptions);
+  this.getCities();
+}
+
 $(function(){
   SunApp.initialize();
 })
