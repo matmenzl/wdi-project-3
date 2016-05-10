@@ -1,5 +1,7 @@
 var SunApp = SunApp || {};
 
+// ***** USER AUTHENTICATION *****
+
 SunApp.getToken = function(){
   return window.localStorage.getItem("token")
 }
@@ -41,7 +43,8 @@ SunApp.getTemplate = function(tpl, data){
   }).done(function(templateData){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
-    $("main").empty().append(compiledTemplate);
+    $("main").html(compiledTemplate);
+    if ($("#map-canvas").length > 0) SunApp.createWorldMap();
   })
 }
 
@@ -66,9 +69,7 @@ SunApp.getUsers = function(){
 }
 
 SunApp.initialize = function(){
-  // $("form").on("submit", this.submitForm);
   $("main").on("submit", "form", this.submitForm);
-  
   $("#getUsers").on("click", this.getUsers);
   $("header nav a").on("click", this.changePage);
 }
