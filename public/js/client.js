@@ -1,5 +1,11 @@
 var SunApp = SunApp || {};
 
+
+SunApp.initialize = function(){
+  $("main").on("submit", "form", this.submitForm);
+  $("header nav a").on("click", this.changePage);
+  $("a#users").on("click", this.getUsers);
+}
 // ***** USER AUTHENTICATION *****
 
 SunApp.getToken = function(){
@@ -20,17 +26,18 @@ SunApp.setRequestHeader = function(xhr, settings){
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
-SunApp.ajaxRequest = function(method, url, data){
+SunApp.ajaxRequest = function(method, url, data, callback){
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data)
+    console.log(data);
+    callback(data);
     return SunApp.saveTokenIfPresent(data);
   }).fail(function(data){
-    console.log(data.responseJSON.message);
+    console.log(data.statusText);
   });
 }
 
@@ -65,13 +72,80 @@ SunApp.submitForm = function(){
 }
 
 SunApp.getUsers = function(){
-  return SunApp.ajaxRequest("get", "/users");
+  event.preventDefault();
+  console.log("getUsers");
+  return SunApp.ajaxRequest("get", "/users", null, SunApp.displayUsers);
 }
 
-SunApp.initialize = function(){
-  $("main").on("submit", "form", this.submitForm);
-  $("#getUsers").on("click", this.getUsers);
-  $("header nav a").on("click", this.changePage);
+SunApp.displayUsers = function(data){
+  console.log("displayUsers");
+  return $.each(data.users, function(index, user) {
+    $(".users").prepend('<div class="media">' +
+                          '<div class="media-left">' +
+                            '<a href="#">' +
+                              '<img class="media-object" src="' + user.image +'">' +
+                            '</a>' +
+                          '</div>' +
+                          '<div class="media-body">' +
+                            '<h4 class="media-heading">@' + user.username + '</h4>' +
+                            '<p>' + user.firstName + '</p>'+
+                          '</div>' +
+                        '</div>');
+  });
+}
+
+SunApp.checkLoginState = function(){
+  if (getToken()) {
+    return loggedInState();
+  } else {
+    return loggedOutState();
+  }
+}
+
+SunApp.showPage = function() {
+  event.preventDefault();
+  var linkClass = $(this).attr("class").split("-")[0]
+  $("section").hide();
+  hideErrors();
+  return $("#" + linkClass).show();
+}
+
+SunApp.logout = function(){
+  event.preventDefault();
+  removeToken();
+  console.log("loggedout");
+  return loggedOutState();
+}
+
+SunApp.hideUsers = function(){
+  return $(".users").empty();
+}
+
+SunApp.hideErrors = function(){
+  return $(".alert").removeClass("show").addClass("hide");
+}
+
+SunApp.displayErrors = function(data){
+  return $(".alert").text(data).removeClass("hide").addClass("show");
+}
+
+SunApp.loggedInState = function(){
+  $(".register, .login").hide();
+  return getUsers();
+}
+
+SunApp.loggedOutState = function(){
+  $(".register, .login").show();
+  return hideUsers();
+}
+
+// SunApp.getUsers = function(){
+//   return SunApp.ajaxRequest("get", "http://localhost:3000/api/users", null, displayUsers)
+// }
+
+SunApp.setRequestHeader = function(xhr, settings) {
+  var token = SunApp.getToken();
+  if (token) return xhr.setRequestHeader('Authorization','Bearer ' + token);
 }
 
 SunApp.createMarkerForCity = function(city, timeout) {
@@ -116,4 +190,6 @@ SunApp.createWorldMap = function() {
 $(function(){
   SunApp.initialize();
 })
+
+
 
