@@ -34,7 +34,7 @@ SunApp.ajaxRequest = function(method, url, data, callback){
     beforeSend: this.setRequestHeader
   }).done(function(data){
     console.log(data);
-    callback(data);
+    callback && callback(data);
     return SunApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.statusText);
@@ -138,10 +138,6 @@ SunApp.loggedOutState = function(){
   $(".register, .login").show();
   return hideUsers();
 }
-
-// SunApp.getUsers = function(){
-//   return SunApp.ajaxRequest("get", "http://localhost:3000/api/users", null, displayUsers)
-// }
 
 SunApp.setRequestHeader = function(xhr, settings) {
   var token = SunApp.getToken();
