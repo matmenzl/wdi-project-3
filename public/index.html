@@ -4,16 +4,16 @@
   <title>7 days of sun</title>
   <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/vendor/font-awesome/css/font-awesome.min.css">
   <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/vendor/underscore/underscore-min.js"></script>
   <script type="text/javascript" src="/js/client.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxM36DxD-TmmCuWMML0UXBVSirOUkF42Q" charset="utf-8"></script>
 </head>
-<body>
   <header>
     <nav class="navbar navbar-default">
-      <div class="container">
+      <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -23,25 +23,33 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" data-template="home">7DaysOfSun</a>
-        </div>
+          </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-              <li><a href="/" data-template="home">Home</a></li>
-              <li><a href="/register" data-template="register">Register</a></li>
-              <li><a href="/login" data-template="login">Login</a></li>
-              <li><a href="/" data-template="register">Logout</a></li>
-              <li><a href="/users" id="users" data-template="users/show">Users</a></li>
-
-              <button id="getUsers">Get Users</button>
+            <li>
+              <a class="loggedOut" id="register" data-template="register">Register</a>
+            </li>
+            <li>
+              <a class="loggedOut" id="login" data-template="login">Login</a>
+            </li>
+            <li>
+              <a class="loggedIn" data-template="map">Map</a>
+            </li>
+            <li>
+              <a class="loggedIn" href="/users" data-template="users/index">Users</a>
+            </li>
+            <li>
+              <a class="loggedIn" id="logout" data-template="home">Logout</a>
+            </li>
           </ul> 
-        </div>
+          </div>
       </div><!-- /.container-fluid -->
     </nav>
   </header>
-  <main class="container">
-  <h1>Index</h1>
-  </main>
-</body>
+  <body>
+    <main class="container">
+    </main>
+  </body>
 </html>

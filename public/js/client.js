@@ -1,12 +1,15 @@
 var SunApp = SunApp || {};
 
-
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
-  $("a#users").on("click", this.getUsers);
+  $("#logout").on("click", this.logout);
+  SunApp.checkLoginState();
 }
-// ***** USER AUTHENTICATION *****
+
+SunApp.removeToken = function(){
+  return window.localStorage.removeItem("token")
+}
 
 SunApp.getToken = function(){
   return window.localStorage.getItem("token")
@@ -17,27 +20,29 @@ SunApp.setToken = function(token){
 }
 
 SunApp.saveTokenIfPresent = function(data){
-  if (data.token) return this.setToken(data.token)
-    return false;
+  if (data.token) {
+    this.setToken(data.token);
+    SunApp.checkLoginState();
+  }
 }
 
-SunApp.setRequestHeader = function(xhr, settings){
-  var token = SunApp.getToken();
-  if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
-}
+SunApp.ajaxRequest = function(method, url, data, tpl, callback){
+  console.log("Making request for: ", url);
 
-SunApp.ajaxRequest = function(method, url, data, callback){
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    if (typeof callback === "function") callback(data);
-    return SunApp.saveTokenIfPresent(data);
+    
+    if (typeof callback === "function") return callback(data);
+    
+    SunApp.saveTokenIfPresent(data);
+    if (tpl) SunApp.getTemplate(tpl, data);
+
   }).fail(function(data){
     alert("Error");
-
     console.log(data.statusText);
   });
 }
@@ -52,13 +57,18 @@ SunApp.getTemplate = function(tpl, data){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
     $("main").html(compiledTemplate);
+
+    // If there is a #map-canvas element on the underscore template, then load the world map
     if ($("#map-canvas").length > 0) SunApp.createWorldMap();
   })
 }
 
 SunApp.changePage = function(){
   event.preventDefault();
-  var tpl = ($(this).data("template"));
+  var url = $(this).attr("href");
+  var tpl = $(this).data("template");
+
+  if (url) return SunApp.ajaxRequest("get", url, null, tpl);
   return SunApp.getTemplate(tpl, null);
 }
 
@@ -67,81 +77,35 @@ SunApp.submitForm = function(){
 
   var method = $(this).attr('method');
   var url    = $(this).attr("action");
+  var tpl    = $(this).data("template");
   var data   = $(this).serialize();
-
-  return SunApp.ajaxRequest(method, url, data);
-}
-
-SunApp.getUsers = function(){
-  event.preventDefault();
-  console.log("getUsers");
-  return SunApp.ajaxRequest("get", "/users", null, SunApp.displayUsers);
-}
-
-SunApp.displayUsers = function(data){
-  console.log("displayUsers");
-  return $.each(data.users, function(index, user) {
-    $(".users").prepend('<div class="media">' +
-      '<div class="media-left">' +
-      '<a href="#">' +
-      '<img class="media-object" src="' + user.image +'">' +
-      '</a>' +
-      '</div>' +
-      '<div class="media-body">' +
-      '<h4 class="media-heading">@' + user.username + '</h4>' +
-      '<p>' + user.firstName + '</p>'+
-      '</div>' +
-      '</div>');
-  });
+  return SunApp.ajaxRequest(method, url, data, tpl);
 }
 
 SunApp.checkLoginState = function(){
-  if (getToken()) {
-    return loggedInState();
+  var self = this;
+  if (self.getToken()) {
+    return self.loggedInState();
   } else {
-    return loggedOutState();
+    return self.loggedOutState();
   }
-}
-
-SunApp.showPage = function() {
-  event.preventDefault();
-  var linkClass = $(this).attr("class").split("-")[0]
-  $("section").hide();
-  hideErrors();
-  return $("#" + linkClass).show();
 }
 
 SunApp.logout = function(){
   event.preventDefault();
-  removeToken();
-  return loggedOutState();
-}
-
-SunApp.hideUsers = function(){
-  return $(".users").empty();
-}
-
-SunApp.hideErrors = function(){
-  return $(".alert").removeClass("show").addClass("hide");
-}
-
-SunApp.displayErrors = function(data){
-  return $(".alert").text(data).removeClass("hide").addClass("show");
+  SunApp.removeToken();
+  SunApp.checkLoginState();
 }
 
 SunApp.loggedInState = function(){
-  $(".register, .login").hide();
-  return getUsers();
+  $(".loggedIn").show();
+  $(".loggedOut").hide();
 }
 
 SunApp.loggedOutState = function(){
-  $(".register, .login").show();
-  return hideUsers();
+  $(".loggedIn").hide();
+  $(".loggedOut").show();
 }
-
-// SunApp.getUsers = function(){
-//   return SunApp.ajaxRequest("get", "http://localhost:3000/api/users", null, displayUsers)
-// }
 
 SunApp.setRequestHeader = function(xhr, settings) {
   var token = SunApp.getToken();
@@ -151,27 +115,20 @@ SunApp.setRequestHeader = function(xhr, settings) {
 SunApp.createMarkerForCity = function(city, timeout) {
   var self   = this;
   var latlng = new google.maps.LatLng(city.latitude, city.longitude);
-  // window.setTimeout(function() {
-    var marker = new google.maps.Marker({
-      position: latlng,
-      map: self.map,
-      icon: "./images/beach-pin-final.png"
-    })
-  // }, timeout)
+  var marker = new google.maps.Marker({
+    position: latlng,
+    map: self.map,
+    icon: "./images/beach-pin-final.png"
+  })
 }
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
-    SunApp.createMarkerForCity(city, i*10);
+    if (city.sunny === true) {
+      SunApp.createMarkerForCity(city, i*10);
+    }
   })
 }
-
-SunApp.getCities = function() {
-  var self = this;
-  return SunApp.ajaxRequest("GET", "/cities", null, SunApp.loopThroughCities)
-}
-
-
 
 SunApp.limiter = function(){
   var map = this.map;
@@ -201,9 +158,14 @@ SunApp.createWorldMap = function() {
     styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
   }
   this.map = new google.maps.Map(this.canvas, mapOptions);
-  this.getCities();
+  
+  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
   this.limiter();
 }
+
+SunApp.createGif = function(){
+  $('body').css("background","url(/images/7daysofsun.gif)");
+}; 
 
 $(function(){
   SunApp.initialize();
