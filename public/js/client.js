@@ -2,8 +2,8 @@ var SunApp = SunApp || {};
 
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
-  $("#getUsers").on("click", this.getUsers);
   $("header nav a").on("click", this.changePage);
+  $("a#users").on("click", this.getUsers);
 }
 
 SunApp.getToken = function(){
@@ -24,7 +24,7 @@ SunApp.setRequestHeader = function(xhr, settings){
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
-SunApp.ajaxRequest = function(method, url, data){
+SunApp.ajaxRequest = function(method, url, data, callback){
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
@@ -32,6 +32,7 @@ SunApp.ajaxRequest = function(method, url, data){
     beforeSend: this.setRequestHeader
   }).done(function(data){
     console.log(data);
+    callback(data);
     return SunApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.statusText);
@@ -68,11 +69,14 @@ SunApp.submitForm = function(){
 }
 
 SunApp.getUsers = function(){
-  return SunApp.ajaxRequest("get", "/users");
+  event.preventDefault();
+  console.log("getUsers");
+  return SunApp.ajaxRequest("get", "/users", null, SunApp.displayUsers);
 }
 
-SunApp.displayUsers = function(data, user){
-  return $.each(data.users, function(index) {
+SunApp.displayUsers = function(data){
+  console.log("displayUsers");
+  return $.each(data.users, function(index, user) {
     $(".users").prepend('<div class="media">' +
                           '<div class="media-left">' +
                             '<a href="#">' +
@@ -132,9 +136,9 @@ SunApp.loggedOutState = function(){
   return hideUsers();
 }
 
-SunApp.getUsers = function(){
-  return ajaxRequest("get", "http://localhost:3000/users", null, displayUsers)
-}
+// SunApp.getUsers = function(){
+//   return SunApp.ajaxRequest("get", "http://localhost:3000/api/users", null, displayUsers)
+// }
 
 SunApp.setRequestHeader = function(xhr, settings) {
   var token = SunApp.getToken();
