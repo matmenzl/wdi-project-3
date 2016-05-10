@@ -80,14 +80,15 @@ SunApp.createMarkerForCity = function(city, timeout) {
   window.setTimeout(function() {
     var marker = new google.maps.Marker({
       position: latlng,
-      map: self.map,
-      icon: "./images/marker.png"
+      map: self.map
     })
   }, timeout)
 }
 
 SunApp.loopThroughCities = function(data) {
+  console.log(data);
   return $.each(data.cities, function(i, city) {
+    console.log("hello");
     SunApp.createMarkerForCity(city, i*10);
   })
 }
@@ -97,7 +98,7 @@ SunApp.getCities = function() {
   $.ajax({
     type: "GET",
     url: "http://localhost:3000/cities"
-  }).done(self.loopThroughCities);
+  }).done(SunApp.loopThroughCities);
 }
 
 SunApp.createWorldMap = function() {
@@ -105,7 +106,7 @@ SunApp.createWorldMap = function() {
 
   var mapOptions = {
     zoom: 12,
-    center: new google.maps.LatLng(51.506178, -0.088369),
+    center: new google.maps.LatLng(23.497885, 58.502197),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
   this.map = new google.maps.Map(this.canvas, mapOptions);
