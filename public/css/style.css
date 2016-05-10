@@ -8,10 +8,28 @@ body#home {
   background-repeat: no-repeat;
 }
 
+div#claim, #title {
+  font-size: 46px;
+  font-weight: bold;
+  color:#70B8B8;
+  padding:5px;
+}
+
+div#claim p {
+    font-size: 46px;
+    font-weight: bold;
+    color:#70B8B8;
+    padding:5px;
+  }
+
 #map-canvas {
   width: 100%;
   height: 100vh;
   margin: 0 auto;
+}
+
+.container {
+  text-align: center;
 }
 
 button {

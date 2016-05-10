@@ -15,8 +15,6 @@ SunApp.addInfoWindowForCity = function(city, marker){
 }
 
 
-
-
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
