@@ -162,7 +162,9 @@ SunApp.createMarkerForCity = function(city, timeout) {
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
-    SunApp.createMarkerForCity(city, i*10);
+    if (city.sunny === true) {
+      SunApp.createMarkerForCity(city, i*10);
+    }
   })
 }
 
