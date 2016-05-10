@@ -2,7 +2,7 @@ html, body {
   margin: 0;
 }
 
-body {
+body#home {
   background-image: url("/images/7daysofsun.gif");
   background-size: cover;
   background-repeat: no-repeat;
@@ -12,11 +12,6 @@ body {
   width: 100%;
   height: 100vh;
   margin: 0 auto;
-}
-
-main.container {
-  text-align:center;
-  padding-top:23em;
 }
 
 button {

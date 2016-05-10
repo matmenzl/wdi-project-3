@@ -84,6 +84,11 @@ SunApp.changePage = function(){
   event.preventDefault();
   var url = $(this).attr("href");
   var tpl = $(this).data("template");
+  if (tpl != "home") {
+    $('body').attr("id", "");
+  } else {
+    $('body').attr("id", "home");
+  }
 
   if (url) return SunApp.ajaxRequest("get", url, null, tpl);
   return SunApp.getTemplate(tpl, null);
@@ -180,10 +185,6 @@ SunApp.createWorldMap = function() {
   SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
   this.limiter();
 }
-
-SunApp.createGif = function(){
-  $('body').css("background","url(/images/7daysofsun.gif)");
-}; 
 
 $(function(){
   SunApp.initialize();
