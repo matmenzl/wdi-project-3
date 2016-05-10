@@ -24,14 +24,24 @@ button {
   text-align:center;
 }
 
+.button {
+  margin: 0 auto;
+  display:inline-block;
+  border: solid 1px white;
+  width:75%;
+  height: 50px;
+  background-color: #70B8B8;
+  text-align:center;
+}
 
-button#world {
- background-image: url("/images/world-map-icon.png");
+
+#world {
+ /*background-image: url("/images/world-map-icon.png");*/
  width: 100px;
  height: 100px;
- background-size: contain;
+/* background-size: contain;
  background-repeat: no-repeat;
- background-color: #70B8B8;
+ background-color: #70B8B8;*/
  border-radius:50%;
  opacity: 0.7;
 }

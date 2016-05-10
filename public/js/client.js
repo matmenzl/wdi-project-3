@@ -1,27 +1,11 @@
 var SunApp = SunApp || {};
 
-SunApp.addInfoWindowForCity = function(city, marker){
-  var self = this;
-  google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
-    if(typeof self.infowindow != "undefined") self.infowindow.close();
-
-    self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"
-    });
-    self.infowindow.open(self.map, this);
-  })
-}
-
-
-
-
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
+  SunApp.bindLinkClicks();
 }
 
 SunApp.removeToken = function(){
@@ -80,6 +64,16 @@ SunApp.getTemplate = function(tpl, data){
   })
 }
 
+SunApp.bindLinkClicks = function() {
+  $("body").on("click", "a.map-region", this.linkClick);
+}
+
+SunApp.linkClick = function() {
+  event.preventDefault();
+  var tpl = $(this).data("template");
+  return SunApp.getTemplate(tpl, null);
+}
+
 SunApp.changePage = function(){
   event.preventDefault();
   var url = $(this).attr("href");
@@ -132,6 +126,20 @@ SunApp.loggedOutState = function(){
 SunApp.setRequestHeader = function(xhr, settings) {
   var token = SunApp.getToken();
   if (token) return xhr.setRequestHeader('Authorization','Bearer ' + token);
+}
+
+SunApp.addInfoWindowForCity = function(city, marker){
+  var self = this;
+  google.maps.event.addListener(marker, "click", function(){
+    console.log(city.name)
+
+    if(typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+city.name+"</p>"
+    });
+    self.infowindow.open(self.map, this);
+  })
 }
 
 SunApp.createMarkerForCity = function(city, timeout) {
