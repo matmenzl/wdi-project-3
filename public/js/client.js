@@ -1,5 +1,22 @@
 var SunApp = SunApp || {};
 
+SunApp.addInfoWindowForCity = function(city, marker){
+  var self = this;
+  google.maps.event.addListener(marker, "click", function(){
+    console.log(city.name)
+
+    if(typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+city.name+"</p>"
+    });
+    self.infowindow.open(self.map, this);
+  })
+}
+
+
+
+
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
@@ -120,6 +137,7 @@ SunApp.createMarkerForCity = function(city, timeout) {
     map: self.map,
     icon: "./images/beach-pin-final.png"
   })
+  self.addInfoWindowForCity(city, marker)
 }
 
 SunApp.loopThroughCities = function(data) {
