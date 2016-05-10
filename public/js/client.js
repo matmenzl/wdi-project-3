@@ -179,6 +179,18 @@ SunApp.createWorldMap = function() {
   this.getCities();
 }
 
+
+SunApp.createGif = function(){
+  $('body').css("background","url(/images/7daysofsun.gif)");
+  }; 
+
+SunApp.showGif = function(){
+      if (window.location.pathname == "index") {
+      } else {
+
+      }
+    };
+
 $(function(){
   SunApp.initialize();
 })

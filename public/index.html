@@ -13,7 +13,7 @@
 </head>
   <header>
     <nav class="navbar navbar-default">
-      <div class="container">
+      <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" data-template="home">7DaysOfSun</a>
-        </div>
+          </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -34,14 +34,19 @@
               <li><a href="/" data-template="register">Logout</a></li>
               <li><a href="/users" id="users" data-template="users/show">Users</a></li>
           </ul> 
-        </div>
+          </div>
       </div><!-- /.container-fluid -->
     </nav>
   </header>
-  <body>
+  <body class="index">
   <main class="container">
-  <h1>Index</h1>
-  <i class="fa fa-globe" aria-hidden="true"></i>
+  <button id="world"></button>
+  <button id="africa"></button>
+  <button id="asia"></button>
+  <button id="australia"></button>
+  <button id="europe"></button>
+  <button id="north-america"></button>
+  <button id="south-america"></button>
   </main>
 </body>
 </html>
