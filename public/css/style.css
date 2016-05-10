@@ -14,16 +14,6 @@ body#home {
   margin: 0 auto;
 }
 
-button {
-  margin: 0 auto;
-  display:inline-block;
-  border: solid 1px white;
-  width:75%;
-  height: 50px;
-  background-color: #70B8B8;
-  text-align:center;
-}
-
 .button {
   margin: 0 auto;
   display:inline-block;
@@ -35,86 +25,53 @@ button {
 }
 
 
-#world {
- /*background-image: url("/images/world-map-icon.png");*/
+#world-icon {
  width: 100px;
  height: 100px;
-/* background-size: contain;
- background-repeat: no-repeat;
- background-color: #70B8B8;*/
  border-radius:50%;
  opacity: 0.7;
 }
-button#asia {
-  background-image: url("/images/Asia-icon.png");
+
+#asia-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
-button#north-america{
-  background-image: url("/images/america-icon.png");
+#north-america-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
-button#south-america{
-  background-image: url("/images/south-america-icon.png");
+#south-america-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
-button#europe{
-  background-image: url("/images/europe-icon.png");
+#europe-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
-button#africa{
-  background-image: url("/images/africa-icon.png");
+#africa-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
-button#australia{
-  background-image: url("/images/australia-icon.png");
+#australia-icon {
   width: 100px;
   height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #70B8B8;
   border-radius:50%;
   opacity: 0.7;
-
 }
 
 .navbar-default {

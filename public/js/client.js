@@ -48,7 +48,7 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   });
 }
 
-SunApp.getTemplate = function(tpl, data){
+SunApp.getTemplate = function(tpl, data, continent){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
@@ -58,9 +58,13 @@ SunApp.getTemplate = function(tpl, data){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
     $("main").html(compiledTemplate);
-
     // If there is a #map-canvas element on the underscore template, then load the world map
-    if ($("#map-canvas").length > 0) SunApp.createWorldMap();
+    if ($("#map-canvas").length > 0) {
+      if (continent == "world") SunApp.createWorldMap();
+      else {
+        console.log("This is not world... And this works!")
+      }
+    }
   })
 }
 
@@ -70,8 +74,10 @@ SunApp.bindLinkClicks = function() {
 
 SunApp.linkClick = function() {
   event.preventDefault();
+  var continent = this.id
+  console.log(continent)
   var tpl = $(this).data("template");
-  return SunApp.getTemplate(tpl, null);
+  return SunApp.getTemplate(tpl, null, continent);
 }
 
 SunApp.changePage = function(){
@@ -192,6 +198,17 @@ SunApp.createWorldMap = function() {
   
   SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
   this.limiter();
+}
+
+SunApp.createRegionMap = function(continentId) {
+  this.canvas = document.getElementById("map-canvas");
+
+  var continent = continentId;
+  console.log(continent);
+
+  var mapOptions = {
+
+  }
 }
 
 $(function(){
