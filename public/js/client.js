@@ -1,5 +1,11 @@
 var SunApp = SunApp || {};
 
+SunApp.initialize = function(){
+  $("main").on("submit", "form", this.submitForm);
+  $("#getUsers").on("click", this.getUsers);
+  $("header nav a").on("click", this.changePage);
+}
+
 SunApp.getToken = function(){
   return window.localStorage.getItem("token")
 }
@@ -25,10 +31,10 @@ SunApp.ajaxRequest = function(method, url, data){
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data)
+    console.log(data);
     return SunApp.saveTokenIfPresent(data);
   }).fail(function(data){
-    console.log(data.responseJSON.message);
+    console.log(data.statusText);
   });
 }
 
@@ -66,8 +72,6 @@ SunApp.getUsers = function(){
 }
 
 SunApp.displayUsers = function(data, user){
-  // hideErrors();
-  // hideUsers();
   return $.each(data.users, function(index) {
     $(".users").prepend('<div class="media">' +
                           '<div class="media-left">' +
@@ -83,33 +87,63 @@ SunApp.displayUsers = function(data, user){
   });
 }
 
+SunApp.checkLoginState = function(){
+  if (getToken()) {
+    return loggedInState();
+  } else {
+    return loggedOutState();
+  }
+}
+
+SunApp.showPage = function() {
+  event.preventDefault();
+  var linkClass = $(this).attr("class").split("-")[0]
+  $("section").hide();
+  hideErrors();
+  return $("#" + linkClass).show();
+}
+
 SunApp.logout = function(){
   event.preventDefault();
   removeToken();
+  console.log("loggedout");
   return loggedOutState();
 }
 
+SunApp.hideUsers = function(){
+  return $(".users").empty();
+}
+
+SunApp.hideErrors = function(){
+  return $(".alert").removeClass("show").addClass("hide");
+}
+
+SunApp.displayErrors = function(data){
+  return $(".alert").text(data).removeClass("hide").addClass("show");
+}
+
 SunApp.loggedInState = function(){
-  // $("section, .logged-out").hide();
-  // $(".users, .logged-in").show();
-  // return getUsers();
+  $(".register, .login").hide();
+  return getUsers();
 }
 
 SunApp.loggedOutState = function(){
-  // $("section, .logged-in").hide();
-  // $("#register, .logged-out").show();
-  // return hideUsers();
+  $(".register, .login").show();
+  return hideUsers();
 }
 
-SunApp.initialize = function(){
-  // $("form").on("submit", this.submitForm);
-  $("main").on("submit", "form", this.submitForm);
-  
-  $("#getUsers").on("click", this.getUsers);
-  $("header nav a").on("click", this.changePage);
+SunApp.getUsers = function(){
+  return ajaxRequest("get", "http://localhost:3000/users", null, displayUsers)
+}
+
+SunApp.setRequestHeader = function(xhr, settings) {
+  var token = SunApp.getToken();
+  if (token) return xhr.setRequestHeader('Authorization','Bearer ' + token);
 }
 
 $(function(){
   SunApp.initialize();
 })
+
+
 
