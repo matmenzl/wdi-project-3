@@ -33,10 +33,11 @@ SunApp.ajaxRequest = function(method, url, data, callback){
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data);
-    callback && callback(data);
+    if (typeof callback === "function") callback(data);
     return SunApp.saveTokenIfPresent(data);
   }).fail(function(data){
+    alert("Error");
+
     console.log(data.statusText);
   });
 }
@@ -113,7 +114,6 @@ SunApp.showPage = function() {
 SunApp.logout = function(){
   event.preventDefault();
   removeToken();
-  console.log("loggedout");
   return loggedOutState();
 }
 
@@ -142,6 +142,41 @@ SunApp.loggedOutState = function(){
 SunApp.setRequestHeader = function(xhr, settings) {
   var token = SunApp.getToken();
   if (token) return xhr.setRequestHeader('Authorization','Bearer ' + token);
+}
+
+SunApp.createMarkerForCity = function(city, timeout) {
+  var self   = this;
+  var latlng = new google.maps.LatLng(city.latitude, city.longitude);
+  // window.setTimeout(function() {
+    var marker = new google.maps.Marker({
+      position: latlng,
+      map: self.map,
+      icon: "./images/beach-pin-final.png"
+    })
+  // }, timeout)
+}
+
+SunApp.loopThroughCities = function(data) {
+  return $.each(data.cities, function(i, city) {
+    SunApp.createMarkerForCity(city, i*10);
+  })
+}
+
+SunApp.getCities = function() {
+  var self = this;
+  return SunApp.ajaxRequest("GET", "/cities", null, SunApp.loopThroughCities)
+}
+
+SunApp.createWorldMap = function() {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 8,
+    center: new google.maps.LatLng(23.497885, 58.502197),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  this.map = new google.maps.Map(this.canvas, mapOptions);
+  this.getCities();
 }
 
 $(function(){
