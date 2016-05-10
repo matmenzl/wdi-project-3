@@ -28,20 +28,28 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-              <li><a href="/" data-template="home">Home</a></li>
-              <li><a href="/register" data-template="register">Register</a></li>
-              <li><a href="/login" data-template="login">Login</a></li>
-              <li><a href="/" data-template="register">Logout</a></li>
-              <li><a href="/users" id="users" data-template="users/show">Users</a></li>
-
-              <button id="getUsers">Get Users</button>
+            <li>
+              <a class="loggedOut" id="register" data-template="register">Register</a>
+            </li>
+            <li>
+              <a class="loggedOut" id="login" data-template="login">Login</a>
+            </li>
+            <li>
+              <a class="loggedIn" data-template="map">Map</a>
+            </li>
+            <li>
+              <a class="loggedIn" href="/users" data-template="users/index">Users</a>
+            </li>
+            <li>
+              <a class="loggedIn" id="logout" data-template="home">Logout</a>
+            </li>
           </ul> 
         </div>
       </div><!-- /.container-fluid -->
     </nav>
   </header>
   <main class="container">
-  <h1>Index</h1>
+    <h1>Index</h1>
   </main>
 </body>
 </html>
