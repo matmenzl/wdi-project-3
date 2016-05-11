@@ -6,7 +6,8 @@ var citySchema = mongoose.Schema({
   latitude: Number,
   longitude: Number,
   sunny: Boolean,
-  icon: String
+  icon: String,
+  summary: String
 });
 
 module.exports = mongoose.model("City", citySchema);

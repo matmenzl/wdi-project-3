@@ -37,7 +37,8 @@ app.use('/api', expressJWT({ secret: config.secret })
   .unless({
     path: [
       { url: '/api/login', methods: ['POST'] },
-      { url: '/api/register', methods: ['POST'] }
+      { url: '/api/register', methods: ['POST'] },
+      { url: '/api/cities', methods: ['GET'] }
     ]
 }));
 

@@ -1,5 +1,22 @@
 var SunApp = SunApp || {};
 
+SunApp.nextweek = function(){
+  var today = new Date();
+  var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+  return nextweek;
+}
+
+SunApp.formatDate = function(date) {
+  var month = '' + (date.getMonth() + 1);
+  var day   = '' + date.getDate();
+  var year  = date.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
@@ -28,8 +45,6 @@ SunApp.saveTokenIfPresent = function(data){
 }
 
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
-  console.log("Making request for: ", url);
-
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
@@ -92,8 +107,7 @@ SunApp.userShow = function() {
 
 SunApp.linkClick = function() {
   event.preventDefault();
-  var continent = this.id
-  console.log(continent)
+  var continent = this.id;
   var tpl = $(this).data("template");
   return SunApp.getTemplate(tpl, null, continent);
 }
@@ -160,39 +174,17 @@ SunApp.addInfoWindowForCity = function(city, marker){
     if(typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"
+      content: "<p>"+city.name+"</p><p>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div>"
+    });
+
+    google.maps.event.addListener(self.infowindow, 'domready', function() {
+      // SunApp.createSkyscannerWidget(city.airportCode);
+      SunApp.createSkyscannerWidget();
     });
     self.infowindow.open(self.map, this);
   })
 }
 
-SunApp.addInfoWindowForCity = function(city, marker){
-  var self = this;
-  google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
-    if(typeof self.infowindow != "undefined") self.infowindow.close();
-
-    self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"
-    });
-    self.infowindow.open(self.map, this);
-  })
-}
-
-SunApp.addInfoWindowForCity = function(city, marker){
-  var self = this;
-  google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
-    if(typeof self.infowindow != "undefined") self.infowindow.close();
-
-    self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"+"<p>"+city.continent+"</p>"
-    });
-    self.infowindow.open(self.map, this);
-  })
-}
 
 SunApp.createMarkerForCity = function(city, timeout) {
   var self   = this;
@@ -202,14 +194,12 @@ SunApp.createMarkerForCity = function(city, timeout) {
     map: self.map,
     icon: "./images/beach-pin-final.png"
   })
-  console.log(marker)
   self.addInfoWindowForCity(city, marker)
 }
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
-      console.log(city)
       SunApp.createMarkerForCity(city, i*10);
     }
   })
@@ -276,10 +266,30 @@ SunApp.createRegionMap = function(continentId) {
   this.limiter();
 }
 
+SunApp.createSkyscannerWidget = function(destination){
+  var snippet   = new skyscanner.snippets.SearchPanelControl();
+  var container = document.getElementById("snippet_searchpanel");
+
+  var today     = SunApp.formatDate(new Date())
+  var nextWeek  = SunApp.formatDate(SunApp.nextweek());
+
+  snippet.setOutboundDate(today);
+  snippet.setInboundDate(nextWeek);
+  snippet.setShape("box300x250");
+  snippet.setCulture("en-GB");
+  snippet.setCurrency("GBP");
+  // snippet.setDestination(destination, true);
+  snippet.setDestination("MCT", true);
+  snippet.setProduct("flights","1");
+  snippet.setProduct("hotels","2");
+  snippet.setProduct("carhire","3");
+  snippet.draw(container);
+}
+
 $(function(){
   SunApp.initialize();
-
+  skyscanner.load("snippets","2");
 })
 
 
-
+// 35fff62f-529e-4063-8019-7ec77610a28b

@@ -103,20 +103,33 @@ function crawlCities() {
     cities.forEach(function(city) {
       rp(url + city.latitude + "," + city.longitude)
         .then(function(data) {
-          var parsedData = JSON.parse(data);
-          // Get the daily data
-          var cityData = parsedData.daily.data;
           
-          city.sunny = true;
-          i = 0;
-          var clearWeather = ["clear-day", "clear-night", "partly-cloudy-night"];
+          var parsedData = JSON.parse(data);
+          
+          // Get the daily data
+          var cityData    = parsedData.daily.data;
+          city.summary    = parsedData.daily.summary;
+          city.sunny      = true;
+
+          var clearWeather = [
+            "clear-day", 
+            "clear-night", 
+            "partly-cloudy-night", 
+            "partly-cloudy-day"
+          ];
+
+          var i = 0;
           while (city.sunny && i < cityData.length) {
             if (clearWeather.indexOf(cityData[i].icon) === -1) city.sunny = false;
             i++;
           }
-          console.log(cityData[i-1].icon + " | " + city.sunny);
+
+          console.log(city.summary);
           
-          city.save();
+          city.save(function(err, city) {
+            if (err) return console.log(err);
+            console.log(city.name + " was saved");
+          });
         })
         .catch(function (err) {
           console.log("error")
@@ -124,7 +137,6 @@ function crawlCities() {
     });
   });
 }
-
 
 desc('Crawling cities for sun sun sun.');
 task('default', crawlCities);
