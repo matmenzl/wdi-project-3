@@ -24,7 +24,6 @@ SunApp.initialize = function(){
   SunApp.checkLoginState();
   SunApp.bindLinkClicks();
   SunApp.getTemplate("home");
-  SunApp.getCurrentUser();
 }
 
 SunApp.removeToken = function(){
@@ -36,8 +35,8 @@ SunApp.getToken = function(){
 }
 
 SunApp.setToken = function(token){
-  SunApp.getCurrentUser();
-  return window.localStorage.setItem('token', token)
+  window.localStorage.setItem('token', token);
+  return SunApp.getCurrentUser();
 }
 
 SunApp.saveTokenIfPresent = function(data){
@@ -176,8 +175,8 @@ SunApp.addInfoWindowForCity = function(city, marker){
     });
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
-      // SunApp.createSkyscannerWidget(city.airportCode);
-      SunApp.createSkyscannerWidget("Muscat", "Stockholm Arlanda");
+      // SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
+      SunApp.createSkyscannerWidget("London Heathrow", city.airportCode);
     });
     self.infowindow.open(self.map, this);
   })

@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 mongoose.connect(config.database);
 
 var City = require("./models/city");
-var User = require("./models/user");
 
 var cities = [
   {
@@ -150,14 +149,6 @@ function crawlCities() {
         });
     });
   });
-}
-
-function crawlAirports() {
-  User.find({}, function(err, users) {
-    users.forEach(function(user) {
-      rp()
-    })
-  })
 }
 
 // 7d929052505467596765674128261338
