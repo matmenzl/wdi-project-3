@@ -23,6 +23,7 @@ SunApp.initialize = function(){
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
   SunApp.bindLinkClicks();
+  SunApp.getTemplate("home");
 }
 
 SunApp.removeToken = function(){
@@ -34,7 +35,8 @@ SunApp.getToken = function(){
 }
 
 SunApp.setToken = function(token){
-  return window.localStorage.setItem('token', token)
+  window.localStorage.setItem('token', token);
+  return SunApp.getCurrentUser();
 }
 
 SunApp.saveTokenIfPresent = function(data){
@@ -42,6 +44,17 @@ SunApp.saveTokenIfPresent = function(data){
     this.setToken(data.token);
     SunApp.checkLoginState();
   }
+}
+
+SunApp.getCurrentUser = function() {
+  if (SunApp.getToken()) var decodedPayload = jwt_decode(SunApp.getToken());
+  return $.ajax({
+    method: "GET",
+    url: "http://localhost:3000/api/users/" + decodedPayload._id,
+    beforeSend: SunApp.setRequestHeader
+  }).done(function(data) {
+    SunApp.currentUser = data.user;
+  })
 }
 
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
@@ -149,11 +162,13 @@ SunApp.logout = function(){
   event.preventDefault();
   SunApp.removeToken();
   SunApp.checkLoginState();
+  SunApp.currentUser = null;
 }
 
 SunApp.loggedInState = function(){
   $(".loggedIn").show();
   $(".loggedOut").hide();
+
 }
 
 SunApp.loggedOutState = function(){
@@ -178,8 +193,8 @@ SunApp.addInfoWindowForCity = function(city, marker){
     });
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
-      // SunApp.createSkyscannerWidget(city.airportCode);
-      SunApp.createSkyscannerWidget();
+      // SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
+      SunApp.createSkyscannerWidget("London Heathrow", city.airportCode);
     });
     self.infowindow.open(self.map, this);
   })
@@ -266,20 +281,23 @@ SunApp.createRegionMap = function(continentId) {
   this.limiter();
 }
 
-SunApp.createSkyscannerWidget = function(destination){
+SunApp.createSkyscannerWidget = function(origin, destination){
   var snippet   = new skyscanner.snippets.SearchPanelControl();
   var container = document.getElementById("snippet_searchpanel");
 
   var today     = SunApp.formatDate(new Date())
   var nextWeek  = SunApp.formatDate(SunApp.nextweek());
-
+  if (window.localStorage.token){
+    console.log("There's a token!")
+  }
   snippet.setOutboundDate(today);
   snippet.setInboundDate(nextWeek);
   snippet.setShape("box300x250");
   snippet.setCulture("en-GB");
   snippet.setCurrency("GBP");
-  // snippet.setDestination(destination, true);
-  snippet.setDestination("MCT", true);
+  snippet.setDeparture(origin, true);
+  snippet.setDestination(destination, true);
+  // snippet.setDestination("MCT", true);
   snippet.setProduct("flights","1");
   snippet.setProduct("hotels","2");
   snippet.setProduct("carhire","3");
