@@ -4,7 +4,7 @@ html, body {
 
 
 body#home {
-  /*background-image: url("/images/7daysofsun_new.gif");*/
+  background-image: url("/images/7daysofsun_new.gif");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -94,7 +94,7 @@ div#homepage, #title {
 
 .navbar-default {
   background-color: #E0EAFC;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 
@@ -113,7 +113,7 @@ div#homepage, #title {
 
 .navbar-default .navbar-brand {
   color:#70B8B8;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 .navbar-default {
@@ -121,7 +121,8 @@ div#homepage, #title {
 }
 
 #logo {
-  height: 200px;
+  height: 65%;
+  width:65%;
 }
 #logo1{
   height: 30px;
@@ -129,6 +130,42 @@ div#homepage, #title {
 }
 h2#tagline {
   color: #70B8B8;
-  font-size: 35px;
+  font-size: 28px;
 }
 
+form.login, .register {
+  padding: 0 100px 0 100px;
+  }
+
+#map-canvas div .gm-style.gm-style-iw {
+  background-color:#E0EAFC;
+}
+
+#summary {
+  font-size:20px;
+  color:black;
+  font-weight:bold;
+}
+
+.media-left {
+  display:inline-block;
+}
+
+img.media-object {
+  border-radius: 50%;
+  padding:5px;
+}
+
+div.media{
+  border: solid 1px #E0EAFC;
+  background-color:#E0EAFC;
+  border-radius: 2px;
+  float:left;
+  margin: 0 5px 5px 0;
+  padding:5px;
+}
+
+.media-body {
+  width:auto;
+  padding:5px;
+}
