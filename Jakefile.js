@@ -10,79 +10,92 @@ var cities = [
     name: "Paris",
     latitude: 48.8589996,
     longitude: 2.2071294,
-    continent: "Europe"
+    continent: "Europe",
+    airportCode: "CDG"
   },
   {
     name: "New York",
     latitude: 40.70583,
     longitude: -74.2588803,
-    continent: "NAmerica"
+    continent: "NAmerica",
+    airportCode: "JFk"
   },
   {
     name: "Aberdeen",
     latitude: 57.149717, 
     longitude: -2.094278,
-    continent: "Europe"
+    continent: "Europe",
+    airportCode: "ABZ"
   },
   {
     name: "Marrakech",
     latitude: 31.629472, 
     longitude: -7.981084,
-    continent: "Africa"
+    continent: "Africa",
+    airportCode: "RAK"
   },
   {
     name: "Athens",
     latitude: 37.983917, 
     longitude: 23.72936,
-    continent: "Europe"
+    continent: "Europe",
+    airportCode: "ATH"
   },
   {
     name: "Bali",
     latitude: -8.696808,
     longitude: 115.208817,
-    continent: "Asia"
+    continent: "Asia",
+    airportCode: "DPS"
   },
   {
     name: "Singapore",
     latitude: 1.302755,
     longitude: 103.862686,
-    continent: "Asia"
+    continent: "Asia",
+    airportCode: "SIN"
   },
   {
-    name: "Columbo",
+    name: "Colombo",
     latitude: 6.908321,
     longitude: 79.867172,
-    continent: "Asia"
+    continent: "Asia",
+    airportCode: "CMD"
   },
   {
     name: "Sydney",
     latitude: -33.923492,
     longitude: 151.225433,
-    continent: "Australasia"
+    continent: "Oceania",
+    airportCode: "SYD"
   },
   {
     name: "Tokyo",
     latitude: 35.702718,
     longitude: 139.733047,
-    continent: "Asia"
+    continent: "Asia",
+    airportCode: "HND"
   },
   {
     name: "Cape Town",
     latitude: -33.931557,
     longitude: 18.467674,
-    continent: "Africa"
+    continent: "Africa",
+    airportCode: "CPT"
   },
   {
     name: "Brasilia",
     latitude: -15.837508,
     longitude: -47.872925,
-    continent: "SAmerica"
+    continent: "SAmerica",
+    airportCode: "BSB"
   },
   {
     name: "Muscat",
     latitude: 23.497885, 
     longitude: 58.502197,
-    continent: "Asia"
+    continent: "Asia",
+    airportCode: "MCT"
   }
 ]
 

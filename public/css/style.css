@@ -4,7 +4,7 @@ html, body {
 
 
 body#home {
-  /*background-image: url("/images/7daysofsun_new.gif");*/
+  background-image: url("/images/7daysofsun_new.gif");
   background-size: cover;
   background-repeat: no-repeat;
 }
