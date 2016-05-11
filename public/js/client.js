@@ -70,6 +70,24 @@ SunApp.getTemplate = function(tpl, data, continent){
 
 SunApp.bindLinkClicks = function() {
   $("body").on("click", "a.map-region", this.linkClick);
+  $("body").on("click", "a.user", this.userShow);
+
+}
+
+SunApp.userShow = function() {
+  event.preventDefault();
+  var id = this.id;
+  $.ajax({
+    url: "http://localhost:3000/api/users/" + id,
+    method: "GET",
+    beforeSend: SunApp.setRequestHeader
+  }).done(function(data){
+    console.log(data)
+    SunApp.getTemplate("users/show", data)
+  }).fail(function(data) {
+    console.log(data);
+  })
+
 }
 
 SunApp.linkClick = function() {

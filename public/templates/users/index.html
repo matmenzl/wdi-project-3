@@ -11,7 +11,9 @@
         <div class="media-body">
           <h4 class="media-heading">@<%= user.username %></h4>
           <p><%= user.firstName %></p>
+          <p><%= user.lastName %></p>
         </div>
+        <a class="loggedIn user" id="<%= user._id %>" data-template="users/show">User Profile</a>
       </div>
     <% }) %>
   </div>
