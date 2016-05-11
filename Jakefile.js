@@ -152,7 +152,7 @@ function crawlCities() {
   });
 }
 
-function crawlUsers() {
+function crawlAirports() {
   User.find({}, function(err, users) {
     users.forEach(function(user) {
       rp()

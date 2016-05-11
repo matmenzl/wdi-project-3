@@ -24,6 +24,7 @@ SunApp.initialize = function(){
   SunApp.checkLoginState();
   SunApp.bindLinkClicks();
   SunApp.getTemplate("home");
+  SunApp.getCurrentUser();
 }
 
 SunApp.removeToken = function(){
@@ -35,6 +36,7 @@ SunApp.getToken = function(){
 }
 
 SunApp.setToken = function(token){
+  SunApp.getCurrentUser();
   return window.localStorage.setItem('token', token)
 }
 
@@ -43,6 +45,17 @@ SunApp.saveTokenIfPresent = function(data){
     this.setToken(data.token);
     SunApp.checkLoginState();
   }
+}
+
+SunApp.getCurrentUser = function() {
+  if (SunApp.getToken()) var decodedPayload = jwt_decode(SunApp.getToken());
+  return $.ajax({
+    method: "GET",
+    url: "http://localhost:3000/api/users/" + decodedPayload._id,
+    beforeSend: SunApp.setRequestHeader
+  }).done(function(data) {
+    SunApp.currentUser = data.user;
+  })
 }
 
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
@@ -132,13 +145,12 @@ SunApp.logout = function(){
   event.preventDefault();
   SunApp.removeToken();
   SunApp.checkLoginState();
+  SunApp.currentUser = null;
 }
 
 SunApp.loggedInState = function(){
   $(".loggedIn").show();
   $(".loggedOut").hide();
-  var decodedPayload = jwt_decode(SunApp.getToken());
-  console.log(decodedPayload._id);
 
 }
 
@@ -165,7 +177,7 @@ SunApp.addInfoWindowForCity = function(city, marker){
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
       // SunApp.createSkyscannerWidget(city.airportCode);
-      SunApp.createSkyscannerWidget();
+      SunApp.createSkyscannerWidget("Muscat", "Stockholm Arlanda");
     });
     self.infowindow.open(self.map, this);
   })
@@ -252,7 +264,7 @@ SunApp.createRegionMap = function(continentId) {
   this.limiter();
 }
 
-SunApp.createSkyscannerWidget = function(destination){
+SunApp.createSkyscannerWidget = function(origin, destination){
   var snippet   = new skyscanner.snippets.SearchPanelControl();
   var container = document.getElementById("snippet_searchpanel");
 
@@ -266,8 +278,9 @@ SunApp.createSkyscannerWidget = function(destination){
   snippet.setShape("box300x250");
   snippet.setCulture("en-GB");
   snippet.setCurrency("GBP");
-  // snippet.setDestination(destination, true);
-  snippet.setDestination("MCT", true);
+  snippet.setDeparture(origin, true);
+  snippet.setDestination(destination, true);
+  // snippet.setDestination("MCT", true);
   snippet.setProduct("flights","1");
   snippet.setProduct("hotels","2");
   snippet.setProduct("carhire","3");
