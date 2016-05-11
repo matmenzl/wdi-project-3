@@ -22,15 +22,24 @@ div#claim p {
     padding:5px;
   }
 
+
 #map-canvas {
-  width: 100%;
-  height: 100vh;
-  margin: 0 auto;
+  width:100%;
+  height:100%;
+  position: absolute;
+  top: 60px;
+  left: 0px;
 }
 
-.container {
-  text-align: center;
+.container{
+  width: 100%;
+  margin: 0 auto;
+  margin-top:50px;
+  text-align:center;
 }
+
+
+
 
 button {
   margin: 0 auto;

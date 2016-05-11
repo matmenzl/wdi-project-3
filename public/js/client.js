@@ -184,8 +184,11 @@ SunApp.createWorldMap = function() {
   this.limiter();
 }
 
+
+
 $(function(){
   SunApp.initialize();
+
 })
 
 
