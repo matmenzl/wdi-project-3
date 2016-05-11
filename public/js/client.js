@@ -8,7 +8,7 @@ SunApp.addInfoWindowForCity = function(city, marker){
     if(typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"
+      content: "<p>"+city.name+"</p>"+"<p>"+city.continent+"</p>"
     });
     self.infowindow.open(self.map, this);
   })
