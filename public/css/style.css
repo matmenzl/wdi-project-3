@@ -169,3 +169,25 @@ div.media{
   width:auto;
   padding:5px;
 }
+
+.btn-primary {
+  background-color: #E0EAFC;
+  color: #70B8B8;
+  border-color: #70B8B8;
+}
+
+.btn-primary:hover {
+  background-color: #70B8B8;
+  color: #E0EAFC;
+  border-color: #70B8B8;
+}
+
+.form-control {
+  border: solid 1px #70B8B8;
+  background-color: #E0EAFC;
+  color: #70B8B8;
+}
+
+.form-control::-webkit-input-placeholder {
+color:#70B8B8;
+
