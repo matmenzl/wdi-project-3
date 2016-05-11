@@ -163,7 +163,6 @@ SunApp.addInfoWindowForCity = function(city, marker){
       // SunApp.createSkyscannerWidget(city.airportCode);
       SunApp.createSkyscannerWidget();
     });
-
     self.infowindow.open(self.map, this);
   })
 }
