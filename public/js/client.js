@@ -264,4 +264,23 @@ $(function(){
 })
 
 
+// 35fff62f-529e-4063-8019-7ec77610a28b
 
+// 
+// <script type="text/javascript">
+//    skyscanner.load("snippets","2");
+//    function main(){
+//        var snippet = new skyscanner.snippets.SearchPanelControl();
+//        snippet.setShape("box300x250");
+//        snippet.setCulture("en-GB");
+//        snippet.setCurrency("GBP");
+//        snippet.setDestination("MCT", true);
+//        snippet.setProduct("flights","1");
+//        snippet.setProduct("hotels","2");
+//        snippet.setProduct("carhire","3");
+
+//        snippet.draw(document.getElementById("snippet_searchpanel"));
+//    }
+//    skyscanner.setOnLoadCallback(main);
+// </script>
+// <div id="snippet_searchpanel" style="width: auto; height:auto;"></div>

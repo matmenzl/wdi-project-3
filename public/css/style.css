@@ -8,20 +8,12 @@ body#home {
   background-repeat: no-repeat;
 }
 
-div#claim, #title {
+div#homepage, #title {
   font-size: 46px;
   font-weight: bold;
   color:#70B8B8;
   padding:5px;
 }
-
-div#claim p {
-    font-size: 46px;
-    font-weight: bold;
-    color:#70B8B8;
-    padding:5px;
-  }
-
 
 #map-canvas {
   width:100%;
