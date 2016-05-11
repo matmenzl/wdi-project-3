@@ -62,7 +62,7 @@ SunApp.getTemplate = function(tpl, data, continent){
     if ($("#map-canvas").length > 0) {
       if (continent == "world") SunApp.createWorldMap();
       else {
-        console.log("This is not world... And this works!")
+        return SunApp.createRegionMap(continent);
       }
     }
   })
@@ -156,12 +156,14 @@ SunApp.createMarkerForCity = function(city, timeout) {
     map: self.map,
     icon: "./images/beach-pin-final.png"
   })
+  console.log(marker)
   self.addInfoWindowForCity(city, marker)
 }
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
+      console.log(city)
       SunApp.createMarkerForCity(city, i*10);
     }
   })
@@ -203,12 +205,29 @@ SunApp.createWorldMap = function() {
 SunApp.createRegionMap = function(continentId) {
   this.canvas = document.getElementById("map-canvas");
 
-  var continent = continentId;
-  console.log(continent);
-
   var mapOptions = {
-
+    zoom: 3,
+    minZoom: 2,
+    maxZoom: 15,
+    disableDefaultUI: true,
+    zoomControl: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
   }
+
+  SunApp.map = new google.maps.Map(this.canvas, mapOptions);
+
+  var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': continentId }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        SunApp.map.setCenter(results[0].geometry.location);
+      } else {
+        alert("Could not find location: " + location);
+      }
+  });
+
+  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
+  this.limiter();
 }
 
 $(function(){
