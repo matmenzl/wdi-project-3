@@ -23,6 +23,7 @@ SunApp.initialize = function(){
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
   SunApp.bindLinkClicks();
+  SunApp.getTemplate("home");
 }
 
 SunApp.removeToken = function(){
@@ -136,6 +137,9 @@ SunApp.logout = function(){
 SunApp.loggedInState = function(){
   $(".loggedIn").show();
   $(".loggedOut").hide();
+  var decodedPayload = jwt_decode(SunApp.getToken());
+  console.log(decodedPayload._id);
+
 }
 
 SunApp.loggedOutState = function(){
@@ -254,7 +258,9 @@ SunApp.createSkyscannerWidget = function(destination){
 
   var today     = SunApp.formatDate(new Date())
   var nextWeek  = SunApp.formatDate(SunApp.nextweek());
-
+  if (window.localStorage.token){
+    console.log("There's a token!")
+  }
   snippet.setOutboundDate(today);
   snippet.setInboundDate(nextWeek);
   snippet.setShape("box300x250");
