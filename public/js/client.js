@@ -1,27 +1,11 @@
 var SunApp = SunApp || {};
 
-SunApp.addInfoWindowForCity = function(city, marker){
-  var self = this;
-  google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
-    if(typeof self.infowindow != "undefined") self.infowindow.close();
-
-    self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p>"+"<p>"+city.continent+"</p>"
-    });
-    self.infowindow.open(self.map, this);
-  })
-}
-
-
-
-
 SunApp.initialize = function(){
   $("main").on("submit", "form", this.submitForm);
   $("header nav a").on("click", this.changePage);
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
+  SunApp.bindLinkClicks();
 }
 
 SunApp.removeToken = function(){
@@ -64,7 +48,7 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   });
 }
 
-SunApp.getTemplate = function(tpl, data){
+SunApp.getTemplate = function(tpl, data, continent){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
@@ -74,10 +58,26 @@ SunApp.getTemplate = function(tpl, data){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
     $("main").html(compiledTemplate);
-
     // If there is a #map-canvas element on the underscore template, then load the world map
-    if ($("#map-canvas").length > 0) SunApp.createWorldMap();
+    if ($("#map-canvas").length > 0) {
+      if (continent == "world") SunApp.createWorldMap();
+      else {
+        return SunApp.createRegionMap(continent);
+      }
+    }
   })
+}
+
+SunApp.bindLinkClicks = function() {
+  $("body").on("click", "a.map-region", this.linkClick);
+}
+
+SunApp.linkClick = function() {
+  event.preventDefault();
+  var continent = this.id
+  console.log(continent)
+  var tpl = $(this).data("template");
+  return SunApp.getTemplate(tpl, null, continent);
 }
 
 SunApp.changePage = function(){
@@ -134,6 +134,48 @@ SunApp.setRequestHeader = function(xhr, settings) {
   if (token) return xhr.setRequestHeader('Authorization','Bearer ' + token);
 }
 
+SunApp.addInfoWindowForCity = function(city, marker){
+  var self = this;
+  google.maps.event.addListener(marker, "click", function(){
+    console.log(city.name)
+
+    if(typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+city.name+"</p>"
+    });
+    self.infowindow.open(self.map, this);
+  })
+}
+
+SunApp.addInfoWindowForCity = function(city, marker){
+  var self = this;
+  google.maps.event.addListener(marker, "click", function(){
+    console.log(city.name)
+
+    if(typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+city.name+"</p>"
+    });
+    self.infowindow.open(self.map, this);
+  })
+}
+
+SunApp.addInfoWindowForCity = function(city, marker){
+  var self = this;
+  google.maps.event.addListener(marker, "click", function(){
+    console.log(city.name)
+
+    if(typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+city.name+"</p>"+"<p>"+city.continent+"</p>"
+    });
+    self.infowindow.open(self.map, this);
+  })
+}
+
 SunApp.createMarkerForCity = function(city, timeout) {
   var self   = this;
   var latlng = new google.maps.LatLng(city.latitude, city.longitude);
@@ -142,12 +184,14 @@ SunApp.createMarkerForCity = function(city, timeout) {
     map: self.map,
     icon: "./images/beach-pin-final.png"
   })
+  console.log(marker)
   self.addInfoWindowForCity(city, marker)
 }
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
+      console.log(city)
       SunApp.createMarkerForCity(city, i*10);
     }
   })
@@ -186,8 +230,37 @@ SunApp.createWorldMap = function() {
   this.limiter();
 }
 
+SunApp.createRegionMap = function(continentId) {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 3,
+    minZoom: 2,
+    maxZoom: 15,
+    disableDefaultUI: true,
+    zoomControl: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
+  }
+
+  SunApp.map = new google.maps.Map(this.canvas, mapOptions);
+
+  var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': continentId }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        SunApp.map.setCenter(results[0].geometry.location);
+      } else {
+        alert("Could not find location: " + location);
+      }
+  });
+
+  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
+  this.limiter();
+}
+
 $(function(){
   SunApp.initialize();
+
 })
 
 
