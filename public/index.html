@@ -15,41 +15,45 @@
   <script type="text/javascript" src="//api.skyscanner.net/api.ashx?key=35fff62f-529e-4063-8019-7ec77610a28b"></script>
 </head>
 <body>
-  <header>
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" data-template="home">
-            <img src="/images/logo.png"></a>
-          </div>
+  <div class="wrapper">
+    <header>
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" data-template="home">
+              <img src="/images/logo.png">7DaysInTheSun</a>
+            </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a class="loggedOut" id="register" data-template="register">Register</a>
-            </li>
-            <li>
-              <a class="loggedOut" id="login" data-template="login">Login</a>
-            </li>
-            <li>
-              <a class="loggedIn" href="/users" data-template="users/index"><i class="fa fa-user" aria-hidden="true"></i></a>
-            </li>
-            <li>
-              <a class="loggedIn" id="logout" data-template="home">Logout</a>
-            </li>
-          </ul> 
-          </div>
-      </div><!-- /.container-fluid -->
-    </nav>
-  </header>
-  <main></main>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a class="loggedOut" id="register" data-template="register">Register</a>
+              </li>
+              <li>
+                <a class="loggedOut" id="login" data-template="login">Login</a>
+              </li>
+              <li>
+                <a class="loggedIn" href="/users" data-template="users/index"><i class="fa fa-user" aria-hidden="true"></i></a>
+              </li>
+              <li>
+                <a class="loggedIn" id="logout" data-template="home">Logout</a>
+              </li>
+            </ul> 
+            </div>
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>
+    <main></main>
+    <div class="push"></div>
+  </div>
+  <footer>&copy; 2016</footer>
 </body>
 </html>
