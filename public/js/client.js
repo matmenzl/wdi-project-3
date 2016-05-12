@@ -184,21 +184,25 @@ SunApp.addInfoWindowForCity = function(city, marker){
 }
 
 
-SunApp.createMarkerForCity = function(city, timeout) {
+SunApp.createMarkerForCity = function(city, timeout, i) {
   var self   = this;
   var latlng = new google.maps.LatLng(city.latitude, city.longitude);
-  var marker = new google.maps.Marker({
+    
+window.setTimeout(function(){
+   var marker = new google.maps.Marker({
     position: latlng,
     map: self.map,
-    icon: "./images/beach-pin-final.png"
+    icon: "./images/beach-pin-final.png",
+    animation: google.maps.Animation.DROP
   })
-  self.addInfoWindowForCity(city, marker)
+  self.addInfoWindowForCity(city, marker);
+}, timeout)
 }
 
 SunApp.loopThroughCities = function(data) {
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
-      SunApp.createMarkerForCity(city, i*10);
+      SunApp.createMarkerForCity(city, i*100);
     }
   })
 }
