@@ -180,11 +180,13 @@ SunApp.setRequestHeader = function(xhr, settings) {
 
 SunApp.addInfoWindowForCity = function(city, marker){
   var self = this;
+
+
   google.maps.event.addListener(marker, "click", function(){
     if(typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
-      content: "<p id='title'>"+city.name+"</p><p id='summary'>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div></br><button id='favourite-button'>favourite</button>"
+      content: "<h1 id='title'>"+city.name+"</h1><p id='summary'>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div></br><button id='favourite-button' class='btn btn-primary'>favourite</button>"
     });
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
