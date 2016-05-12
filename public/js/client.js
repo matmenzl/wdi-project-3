@@ -70,12 +70,11 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
     SunApp.saveTokenIfPresent(data);
     if (tpl) SunApp.getTemplate(tpl, data);
   }).fail(function(data){
-    alert("Error");
-    console.log(data);
+    console.error(data);
   });
 }
 
-SunApp.getTemplate = function(tpl, data, continent){
+SunApp.getTemplate = function(tpl, data){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
@@ -85,19 +84,16 @@ SunApp.getTemplate = function(tpl, data, continent){
     var parsedTemplate = _.template(templateData);
     var compiledTemplate = parsedTemplate(data);
     $("main").html(compiledTemplate);
+    
     // If there is a #map-canvas element on the underscore template, then load the world map
-    if ($("#map-canvas").length > 0) {
-      if (continent == "world") {
-        SunApp.createWorldMap();
-      } else {
-        return SunApp.createRegionMap(continent);
-      }
-    }
+    if ($("#map-canvas").length > 0) return SunApp.createWorldMap();
+  }).fail(function(){
+    console.error("Did not load template");
   })
 }
 
 SunApp.bindLinkClicks = function() {
-  $("body").on("click", "a.map-region", this.linkClick);
+  $("body").on("click", "a.map", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
 }
 
@@ -115,13 +111,9 @@ SunApp.userShow = function() {
 
 SunApp.linkClick = function() {
   event.preventDefault();
-  var continent = this.id;
   var tpl  = $(this).data("template");
   var href = $(this).attr("href");
-  SunApp.ajaxRequest("get", href, null, tpl, function(data){
-    return SunApp.getTemplate(tpl, data, continent);
-  })
-  
+  SunApp.ajaxRequest("get", href, null, tpl)  
 }
 
 SunApp.changePage = function(){
@@ -239,38 +231,10 @@ SunApp.createWorldMap = function() {
     disableDefaultUI: true,
     zoomControl: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
+    styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
   }
   this.map = new google.maps.Map(this.canvas, mapOptions);
   
-  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
-  this.limiter();
-}
-
-SunApp.createRegionMap = function(continentId) {
-  this.canvas = document.getElementById("map-canvas");
-
-  var mapOptions = {
-    zoom: 3,
-    minZoom: 2,
-    maxZoom: 15,
-    disableDefaultUI: true,
-    zoomControl: false,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
-  }
-
-  SunApp.map = new google.maps.Map(this.canvas, mapOptions);
-
-  var geocoder = new google.maps.Geocoder();
-    geocoder.geocode( { 'address': continentId }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        SunApp.map.setCenter(results[0].geometry.location);
-      } else {
-        alert("Could not find location: " + location);
-      }
-  });
-
   SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
   this.limiter();
 }
