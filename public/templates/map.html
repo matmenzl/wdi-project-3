@@ -4,7 +4,7 @@
   <div class="results container">
     <h2>These countries have 7 days of sun</h2>
     <ul class="media-list">
-      <% cities.forEach(function(city){ %>
+      <% if (!!cities) cities.forEach(function(city){ %>
         <% if (city.sunny) { %>
           <li class="media">
             <div class="media-left">

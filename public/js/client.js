@@ -74,7 +74,7 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   });
 }
 
-SunApp.getTemplate = function(tpl, data){
+SunApp.getTemplate = function(tpl, data, city){
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
@@ -86,13 +86,26 @@ SunApp.getTemplate = function(tpl, data){
     $("main").html(compiledTemplate);
     
     // If there is a #map-canvas element on the underscore template, then load the world map
-    if ($("#map-canvas").length > 0) return SunApp.createWorldMap();
+    if ($("#map-canvas").length > 0) {
+      if (city == null) SunApp.createWorldMap();
+      else {
+
+        return SunApp.createCityMap(city);
+      }
+    } 
   }).fail(function(){
     console.error("Did not load template");
   })
 }
 
 SunApp.bindLinkClicks = function() {
+  $("body").on("click", "a.map-city", function() {
+    event.preventDefault();
+    var city = this.id;
+    var tpl = $(this).data("template");
+    var data = { cities: null };
+    return SunApp.getTemplate(tpl, data, city);
+  })
   $("body").on("click", "a.map", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
 }
@@ -199,6 +212,7 @@ SunApp.createMarkerForCity = function(city, timeout) {
 }
 
 SunApp.loopThroughCities = function(data) {
+  console.log(data);
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
       SunApp.createMarkerForCity(city, i*10);
@@ -235,6 +249,34 @@ SunApp.createWorldMap = function() {
   }
   this.map = new google.maps.Map(this.canvas, mapOptions);
   
+  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
+  this.limiter();
+}
+
+SunApp.createCityMap = function(cityId) {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 6,
+    minZoom: 2,
+    maxZoom: 15,
+    center: new google.maps.LatLng(0, 11.15),
+    disableDefaultUI: true,
+    zoomControl: false,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
+  }
+  SunApp.map = new google.maps.Map(this.canvas, mapOptions);
+
+  var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': cityId }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        SunApp.map.setCenter(results[0].geometry.location);
+      } else {
+        alert("Could not find location: " + location);
+      }
+  });
+
   SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
   this.limiter();
 }

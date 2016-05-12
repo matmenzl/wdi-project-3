@@ -5,8 +5,6 @@
   <p><%= user.lastName %></p>
   <h3>Sunny Favourites</h3>
   <% user.favourites.forEach(function(favourite) { %>
-    <% if (favourite.sunny == 'true') { %>
-      <p><%= favourite.name %></p>
-    <% } %>
+    <a class="map-city" id="<%= favourite.name %>" data-template="map"><%= favourite.name %></a>
   <% }) %>
 </section>
