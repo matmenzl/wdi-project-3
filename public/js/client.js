@@ -27,7 +27,7 @@ SunApp.initialize = function(){
 }
 
 SunApp.removeToken = function(){
-  return window.localStorage.removeItem("token")
+  return window.localStorage.removeItem("token");
 }
 
 SunApp.getToken = function(){
@@ -47,14 +47,16 @@ SunApp.saveTokenIfPresent = function(data){
 }
 
 SunApp.getCurrentUser = function() {
-  if (SunApp.getToken()) var decodedPayload = jwt_decode(SunApp.getToken());
-  return $.ajax({
-    method: "GET",
-    url: "http://localhost:3000/api/users/" + decodedPayload._id,
-    beforeSend: SunApp.setRequestHeader
-  }).done(function(data) {
-    SunApp.currentUser = data.user;
-  })
+  if (SunApp.getToken() && !SunApp.currentUser) {
+    var decodedPayload = jwt_decode(SunApp.getToken());
+    return $.ajax({
+      method: "GET",
+      url: "http://localhost:3000/api/users/" + decodedPayload._id,
+      beforeSend: SunApp.setRequestHeader
+    }).done(function(data) {
+      SunApp.currentUser = data.user;
+    })
+  }
 }
 
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
@@ -62,17 +64,14 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
     method: method,
     url: "http://localhost:3000/api" + url,
     data: data,
-    beforeSend: this.setRequestHeader
+    beforeSend: SunApp.setRequestHeader
   }).done(function(data){
-    
     if (typeof callback === "function") return callback(data);
-    
     SunApp.saveTokenIfPresent(data);
     if (tpl) SunApp.getTemplate(tpl, data);
-
   }).fail(function(data){
     alert("Error");
-    console.log(data.statusText);
+    console.log(data);
   });
 }
 
@@ -99,23 +98,17 @@ SunApp.getTemplate = function(tpl, data, continent){
 SunApp.bindLinkClicks = function() {
   $("body").on("click", "a.map-region", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
+  $("body").on("click", "button#favourite-button", this.favouriteCity);
+}
 
+SunApp.favouriteCity = function() {
+  console.log("Favourited!")
 }
 
 SunApp.userShow = function() {
   event.preventDefault();
-  var id = this.id;
-  $.ajax({
-    url: "http://localhost:3000/api/users/" + id,
-    method: "GET",
-    beforeSend: SunApp.setRequestHeader
-  }).done(function(data){
-    console.log(data)
-    SunApp.getTemplate("users/show", data)
-  }).fail(function(data) {
-    console.log(data);
-  })
-
+  var url = $(this).attr("href")
+  return SunApp.ajaxRequest("get", url, null, "users/show")
 }
 
 SunApp.linkClick = function() {
@@ -146,11 +139,14 @@ SunApp.submitForm = function(){
   var url    = $(this).attr("action");
   var tpl    = $(this).data("template");
   var data   = $(this).serialize();
+
+  console.log("SUBMITTED");
   return SunApp.ajaxRequest(method, url, data, tpl);
 }
 
 SunApp.checkLoginState = function(){
   var self = this;
+
   if (self.getToken()) {
     return self.loggedInState();
   } else {
@@ -184,17 +180,15 @@ SunApp.setRequestHeader = function(xhr, settings) {
 SunApp.addInfoWindowForCity = function(city, marker){
   var self = this;
   google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
     if(typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
-      content: "<p id='title'>"+city.name+"</p><p id='summary'>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div>"
+      content: "<p id='title'>"+city.name+"</p><p id='summary'>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div></br><button id='favourite-button'>favourite</button>"
     });
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
-      // SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
-      SunApp.createSkyscannerWidget("London Heathrow", city.airportCode);
+      SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
+      // SunApp.createSkyscannerWidget("London Heathrow", city.airportCode);
     });
     self.infowindow.open(self.map, this);
   })
@@ -284,12 +278,11 @@ SunApp.createRegionMap = function(continentId) {
 SunApp.createSkyscannerWidget = function(origin, destination){
   var snippet   = new skyscanner.snippets.SearchPanelControl();
   var container = document.getElementById("snippet_searchpanel");
-
   var today     = SunApp.formatDate(new Date())
   var nextWeek  = SunApp.formatDate(SunApp.nextweek());
-  if (window.localStorage.token){
-    console.log("There's a token!")
-  }
+  
+  if (window.localStorage.token){ console.log("There's a token!") }
+
   snippet.setOutboundDate(today);
   snippet.setInboundDate(nextWeek);
   snippet.setShape("box300x250");
@@ -297,7 +290,6 @@ SunApp.createSkyscannerWidget = function(origin, destination){
   snippet.setCurrency("GBP");
   snippet.setDeparture(origin, true);
   snippet.setDestination(destination, true);
-  // snippet.setDestination("MCT", true);
   snippet.setProduct("flights","1");
   snippet.setProduct("hotels","2");
   snippet.setProduct("carhire","3");
@@ -307,6 +299,7 @@ SunApp.createSkyscannerWidget = function(origin, destination){
 $(function(){
   SunApp.initialize();
   skyscanner.load("snippets","2");
+  SunApp.getCurrentUser();
 })
 
 
