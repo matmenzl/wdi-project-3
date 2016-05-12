@@ -288,7 +288,6 @@ function crawlCities() {
 
 // 7d929052505467596765674128261338
 
-// desc('Crawling cities for sun sun sun.');
-// task('default', crawlCities);
-// task("seed", seedCities);
-crawlCities();
+desc('Crawling cities for sun sun sun.');
+task('default', crawlCities);
+task("seed", seedCities);
