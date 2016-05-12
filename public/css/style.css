@@ -1,204 +1,112 @@
+/**** structure *****/
+
 html, body {
   margin: 0;
+  height: 100%;
+  min-height: 100%;
 }
 
+/**** header *****/
 
-body#home {
-  background-image: url("/images/7daysofsun_new.gif");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-div#homepage, #title {
-  font-size: 46px;
-  font-weight: bold;
-  color:#70B8B8;
-  padding:5px 5px 20px 5px;
-}
-
-#map-canvas {
-  width:100%;
-  height:100%;
-  position: absolute;
-  top: 50px;
-  left: 0px;
-}
-
-.container{
-  width: 100%;
-  margin: 0 auto;
-  margin-top:50px;
-  text-align:center;
-  padding: 0;
-}
-
-
-.button {
-  margin: 0 auto;
-  display:inline-block;
-  border: solid 1px white;
-  width:75%;
-  height: 50px;
-  background-color: #70B8B8;
-  text-align:center;
-}
-
-
-#world-icon {
- width: 100px;
- height: 100px;
- border-radius:50%;
- opacity: 0.7;
-}
-
-#asia-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
-}
-
-#north-america-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
-}
-
-#south-america-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
-}
-
-#europe-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
-}
-
-#africa-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
-}
-
-#australia-icon {
-  width: 100px;
-  height: 100px;
-  border-radius:50%;
-  opacity: 0.7;
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
 }
 
 .navbar-default {
   background-color: #E0EAFC;
-  font-size: 18px;
+  font-size: 25px;
 }
 
-
-.navbar-default .navbar-nav>li>a {
+.navbar-default .navbar-nav > li > a {
   color:#70B8B8;
   text-align: right;
 }
 
 .navbar-brand {
-    float: left;
-    height: 50px;
-    padding: 10px;
-    font-size: 18px;
-    line-height: 20px;
-}
-
-.navbar-default .navbar-brand {
-  color:#70B8B8;
+  float: left;
+  height: 50px;
+  padding: 10px;
   font-size: 18px;
+  line-height: 20px;
 }
 
-.navbar-default {
-  border:none;
-}
-
-#logo {
-  height: 65%;
-  width:65%;
-}
-#logo1{
+.navbar-brand img {
   height: 30px;
   margin: 0 auto;
 }
-h2#tagline {
+
+.navbar-default {
+  color:#70B8B8;
+  font-size: 20px;
+  border: none;
+}
+
+/**** main *****/
+
+main {
+  height: 100%;
+  /*background: white;*/
+}
+
+/**** footer *****/
+
+
+
+/**** home ****/
+
+#home .home {
+  background-image: url("/images/7daysofsun_new.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+#home #logo {
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+#home h2 {
   color: #70B8B8;
-  font-size: 28px;
+  font-size: 35px;
+  text-align: center;
+  margin: 0 auto 40px;
 }
 
-form.login, .register {
-  padding: 0 100px 0 100px;
-  }
-
-#map-canvas div .gm-style.gm-style-iw {
-  background-color:#E0EAFC;
+#home ul {
+  list-style-type: none;
+  margin: 0 auto 40px;
+  padding: 0;
+  text-align: center;
 }
 
-#summary {
-  font-size:20px;
-  color:black;
-  font-weight:bold;
+#home ul li {
+  display: inline-block;
 }
 
-.media-left {
-  display:inline-block;
-}
-
-img.media-object {
-  border-radius: 50%;
-  padding:5px;
-}
-
-div.media{
-  border: solid 1px #E0EAFC;
-  background-color:#E0EAFC;
-  border-radius: 2px;
-  float:left;
-  margin: 0 5px 5px 0;
-  padding:5px;
-}
-
-.media-body {
-  width:auto;
-  padding:5px;
-}
-
-.btn-primary {
-  background-color: #E0EAFC;
-  color: #70B8B8;
-  border-color: #70B8B8;
-}
-
-.btn-primary:hover {
+#home .button {
+  border: solid 1px white;
+  height: 100px;
+  width: 100px;
   background-color: #70B8B8;
-  color: #E0EAFC;
-  border-color: #70B8B8;
+  text-align:center;
+  border-radius: 100%;
+  opacity: 0.7;
 }
 
-.form-control {
-  border: solid 1px #70B8B8;
-  background-color: #E0EAFC;
-  color: #70B8B8;
-}
-
-.form-control::-webkit-input-placeholder {
-color:#70B8B8;
-}
-
-body#bottom {
+#home #bottom {
   width:100%;
   height:400px;
 }
 
-.jumbotron {
+#home .jumbotron {
   display:inline-block;
   width:40%;
   background: rgba(0, 188, 212, 0.3);
@@ -207,10 +115,63 @@ body#bottom {
   color:white;
 }
 
-.container .jumbotron, .container-fluid .jumbotron {
+#home .container .jumbotron, .container-fluid .jumbotron {
   border-radius:0px;
 }
 
-.fa-user:before {
+/**** map ****/
+
+#map #map-canvas {
+  width: 100%;
+  min-height: 400px;
+}
+
+#map h2 {
+  margin-bottom: 20px;
+}
+
+#map img.media-object {
+  height: 40px;
+}
+
+#summary {
+  font-size: 20px;
+  color: black;
+  font-weight:bold;
+}
+
+/**** users ****/
+
+#users h2 {
+  margin-bottom: 20px;
+}
+
+#users img.media-object {
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+}
+
+/**** user ****/
+
+#user h2 {
+  margin-bottom: 20px;
+}
+
+#user img.media-object {
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+}
+
+/**** forms ****/
+
+.form-control {
+  border: solid 1px #70B8B8;
+  background-color: #E0EAFC;
+  color: #70B8B8;
+}
+
+.form-control::-webkit-input-placeholder {
   color:#70B8B8;
 }

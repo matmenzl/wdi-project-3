@@ -1,16 +1,7 @@
-<section id="users">
-  <div class="users">
-    <div class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object" src="<%= user.image %>">
-        </a>
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">@<%= user.username %></h4>
-        <p><%= user.firstName %> <%= user.lastName %></p>
-        </div>
-      </div>
-    </div>
-  </div>
+<section id="user" class="container">
+  <h2><%= user.username %></h2>
+  <img class="media-object" src="<%= user.image %>">
+  <p><%= user.firstName %></p>
+  <p><%= user.lastName %></p>
+  <p>"Favorites coming from Ryan"</p>
 </section>

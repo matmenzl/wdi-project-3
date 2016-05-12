@@ -1,3 +1,22 @@
-<!-- <div id="container">
- -->  <div id="map-canvas"></div>
-</div>
+<section id="map">
+  <div id="map-canvas"></div>
+
+  <div class="results container">
+    <h2>These countries have 7 days of sun</h2>
+    <ul class="media-list">
+      <% cities.forEach(function(city){ %>
+        <li class="media">
+          <div class="media-left">
+            <a href="#">
+              <img class="media-object" src="/images/logo.png" alt="<%= city.name %>">
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading"><%= city.name %></h4>
+            <p><%= city.summary %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</section>
