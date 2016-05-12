@@ -274,6 +274,7 @@ footer, .push {
   border-radius: 100%;
   width: 200px;
   height: 200px;
+  margin: 0 auto;
 }
 
 #user.container {
