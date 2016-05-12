@@ -27,7 +27,7 @@ SunApp.initialize = function(){
 }
 
 SunApp.removeToken = function(){
-  return window.localStorage.removeItem("token")
+  return window.localStorage.removeItem("token");
 }
 
 SunApp.getToken = function(){
@@ -35,7 +35,8 @@ SunApp.getToken = function(){
 }
 
 SunApp.setToken = function(token){
-  return window.localStorage.setItem('token', token)
+  window.localStorage.setItem('token', token);
+  return SunApp.getCurrentUser();
 }
 
 SunApp.saveTokenIfPresent = function(data){
@@ -45,22 +46,32 @@ SunApp.saveTokenIfPresent = function(data){
   }
 }
 
+SunApp.getCurrentUser = function() {
+  if (SunApp.getToken() && !SunApp.currentUser) {
+    var decodedPayload = jwt_decode(SunApp.getToken());
+    return $.ajax({
+      method: "GET",
+      url: "http://localhost:3000/api/users/" + decodedPayload._id,
+      beforeSend: SunApp.setRequestHeader
+    }).done(function(data) {
+      SunApp.currentUser = data.user;
+    })
+  }
+}
+
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
     data: data,
-    beforeSend: this.setRequestHeader
+    beforeSend: SunApp.setRequestHeader
   }).done(function(data){
-    
     if (typeof callback === "function") return callback(data);
-    
     SunApp.saveTokenIfPresent(data);
     if (tpl) SunApp.getTemplate(tpl, data);
-
   }).fail(function(data){
     alert("Error");
-    console.log(data.statusText);
+    console.log(data);
   });
 }
 
@@ -87,6 +98,18 @@ SunApp.getTemplate = function(tpl, data, continent){
 
 SunApp.bindLinkClicks = function() {
   $("body").on("click", "a.map-region", this.linkClick);
+  $("body").on("click", "a.user", this.userShow);
+  $("body").on("click", "button#favourite-button", this.addFav);
+}
+
+function addFav(){
+  console.log("favourited")
+}
+
+SunApp.userShow = function() {
+  event.preventDefault();
+  var url = $(this).attr("href")
+  return SunApp.ajaxRequest("get", url, null, "users/show")
 }
 
 SunApp.linkClick = function() {
@@ -115,11 +138,13 @@ SunApp.submitForm = function(){
   var url    = $(this).attr("action");
   var tpl    = $(this).data("template");
   var data   = $(this).serialize();
+
   return SunApp.ajaxRequest(method, url, data, tpl);
 }
 
 SunApp.checkLoginState = function(){
   var self = this;
+
   if (self.getToken()) {
     return self.loggedInState();
   } else {
@@ -131,11 +156,13 @@ SunApp.logout = function(){
   event.preventDefault();
   SunApp.removeToken();
   SunApp.checkLoginState();
+  SunApp.currentUser = null;
 }
 
 SunApp.loggedInState = function(){
   $(".loggedIn").show();
   $(".loggedOut").hide();
+
 }
 
 SunApp.loggedOutState = function(){
@@ -151,17 +178,14 @@ SunApp.setRequestHeader = function(xhr, settings) {
 SunApp.addInfoWindowForCity = function(city, marker){
   var self = this;
   google.maps.event.addListener(marker, "click", function(){
-    console.log(city.name)
-
     if(typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
-      content: "<p>"+city.name+"</p><p>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div>"
+      content: "<p id='title'>"+city.name+"</p><p id='summary'>"+city.summary+"</p><div id='snippet_searchpanel' style='width: auto; height:auto;'></div></br><button id='favourite-button'>favourite</button>"
     });
 
     google.maps.event.addListener(self.infowindow, 'domready', function() {
-      // SunApp.createSkyscannerWidget(city.airportCode);
-      SunApp.createSkyscannerWidget();
+      SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
     });
     self.infowindow.open(self.map, this);
   })
@@ -248,10 +272,9 @@ SunApp.createRegionMap = function(continentId) {
   this.limiter();
 }
 
-SunApp.createSkyscannerWidget = function(destination){
+SunApp.createSkyscannerWidget = function(origin, destination){
   var snippet   = new skyscanner.snippets.SearchPanelControl();
   var container = document.getElementById("snippet_searchpanel");
-
   var today     = SunApp.formatDate(new Date())
   var nextWeek  = SunApp.formatDate(SunApp.nextweek());
 
@@ -260,8 +283,8 @@ SunApp.createSkyscannerWidget = function(destination){
   snippet.setShape("box300x250");
   snippet.setCulture("en-GB");
   snippet.setCurrency("GBP");
-  // snippet.setDestination(destination, true);
-  snippet.setDestination("MCT", true);
+  snippet.setDeparture(origin, true);
+  snippet.setDestination(destination, true);
   snippet.setProduct("flights","1");
   snippet.setProduct("hotels","2");
   snippet.setProduct("carhire","3");
@@ -271,7 +294,7 @@ SunApp.createSkyscannerWidget = function(destination){
 $(function(){
   SunApp.initialize();
   skyscanner.load("snippets","2");
+  SunApp.getCurrentUser();
 })
 
 
-// 35fff62f-529e-4063-8019-7ec77610a28b

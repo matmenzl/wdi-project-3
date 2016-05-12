@@ -5,7 +5,7 @@ var jwt      = require("jsonwebtoken");
 
 function register(req, res, next) {
   var localStrategy = passport.authenticate('local-signup', function(err, user, info) {
-    if (err) return res.status(500).json(info);
+    if (err) return res.status(500).json(err);
     if (info) return res.status(401).json(info);
     if (!user) return res.status(401).json(info);
 
@@ -33,7 +33,7 @@ function login(req, res, next) {
     if (!user) return res.status(403).json({ message: 'No user found.' });
     if (!user.validatePassword(req.body.password)) return res.status(403).json({ message: 'Authentication failed.' });
 
-    var payload = user._id;
+    var payload = {_id: user._id};
     var token   = jwt.sign(payload, secret, { expiresIn: 60*60*24 });
 
     return res.status(200).json({

@@ -109,10 +109,52 @@ main {
   min-height: 400px;
 }
 
-#map .results h2 {
+#map h2 {
   margin-bottom: 20px;
 }
 
 #map img.media-object {
   height: 40px;
+}
+
+#summary {
+  font-size: 20px;
+  color: black;
+  font-weight:bold;
+}
+
+/**** users ****/
+
+#users h2 {
+  margin-bottom: 20px;
+}
+
+#users img.media-object {
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+}
+
+/**** user ****/
+
+#user h2 {
+  margin-bottom: 20px;
+}
+
+#user img.media-object {
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+}
+
+/**** forms ****/
+
+.form-control {
+  border: solid 1px #70B8B8;
+  background-color: #E0EAFC;
+  color: #70B8B8;
+}
+
+.form-control::-webkit-input-placeholder {
+  color:#70B8B8;
 }
