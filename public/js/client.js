@@ -1,5 +1,15 @@
 var SunApp = SunApp || {};
 
+SunApp.url;
+
+SunApp.getURL = function(){
+  if (window.location.href.indexOf("localhost") !== -1){
+    SunApp.url = "http://localhost:3000";
+  } else {
+    SunApp.url = "https://sevendaysofsun.herokuapp.com";
+  }
+}
+
 SunApp.nextweek = function(){
   var today = new Date();
   var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
@@ -18,7 +28,8 @@ SunApp.formatDate = function(date) {
 }
 
 SunApp.initialize = function(){
-  $("main").on("submit", "form", this.submitForm);
+  $("main").on("submit", "form.form", this.submitForm);
+  $("main").on("submit", "form#sms-form", this.emailSignup);
   $("header nav a").on("click", this.changePage);
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
@@ -51,7 +62,7 @@ SunApp.getCurrentUser = function() {
     var decodedPayload = jwt_decode(SunApp.getToken());
     return $.ajax({
       method: "GET",
-      url: "http://localhost:3000/api/users/" + decodedPayload._id,
+      url: SunApp.url + "/api/users/" + decodedPayload._id,
       beforeSend: SunApp.setRequestHeader
     }).done(function(data) {
       SunApp.currentUser = data.user;
@@ -62,7 +73,7 @@ SunApp.getCurrentUser = function() {
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   return $.ajax({
     method: method,
-    url: "http://localhost:3000/api" + url,
+    url: SunApp.url + "/api" + url,
     data: data,
     beforeSend: SunApp.setRequestHeader
   }).done(function(data){
@@ -75,7 +86,7 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
 }
 
 SunApp.getTemplate = function(tpl, data, city){
-  var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+  var templateUrl = SunApp.url + "/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
     method: "GET",
@@ -300,7 +311,43 @@ SunApp.createSkyscannerWidget = function(origin, destination){
   snippet.draw(container);
 }
 
+
+SunApp.emailSignup = function() {
+    event.preventDefault();
+    var sms = $('#sms').val();
+    var baseURL = 'https://docs.google.com/a/tages-anzeiger.ch/forms/d/1q-oZ7IS5MinZawIf9xbXj3diAFhhdtJW9ojKaHS3Wio/formResponse';
+    // var submitRef = '&submit=submit';
+    // var submitURL = (baseURL + sms + submitRef);
+    // $(this)[0].action=submitURL;
+    // console.log(submitURL);
+    console.log(sms);
+
+    return $.ajax({
+        method: 'POST',
+        url: baseURL,
+        data: { "entry.1355049609": sms },
+        beforeSend: SunApp.setRequestHeader
+      }).done(function(data){
+        if (typeof callback === "function") return callback(data);
+        SunApp.saveTokenIfPresent(data);
+        if (tpl) SunApp.getTemplate(tpl, data);
+      }).fail(function(data){
+        alert("Error");
+        console.log(data);
+      });
+
+    $('#sms').addClass('active').val('Thank You!');
+    setTimeout(function(){
+      $('#form-container').hide();
+      $('#update-form').animate({'width': '0px'},300,function(){
+        $('#get-updates-link').hide();
+      });
+    },1000); 
+}
+
+
 $(function(){
+  SunApp.getURL();
   SunApp.initialize();
   skyscanner.load("snippets","2");
   SunApp.getCurrentUser();
