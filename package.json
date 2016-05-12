@@ -22,6 +22,7 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-jwt": "^3.4.0",
+    "jake": "^8.0.12",
     "jsonwebtoken": "^6.2.0",
     "method-override": "^2.3.5",
     "mongoose": "^4.4.15",
