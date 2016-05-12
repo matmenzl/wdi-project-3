@@ -3,7 +3,7 @@ var SunApp = SunApp || {};
 SunApp.url;
 
 SunApp.getURL = function(){
-  if (window.location.href.indexOf("localhost")){
+  if (window.location.href.indexOf("localhost") !== -1){
     SunApp.url = "http://localhost:3000";
   } else {
     SunApp.url = "https://sevendaysofsun.herokuapp.com";
