@@ -1,7 +1,10 @@
-var rp = require("request-promise");
-var config = require("./config/config");
+var rp       = require("request-promise");
+var config   = require("./config/config");
 var mongoose = require('mongoose');
-mongoose.connect(config.database);
+
+mongoose.connect(config.database, function(){
+  console.log("connected");
+});
 
 var City = require("./models/city");
 
@@ -246,6 +249,7 @@ var url = 'https://api.forecast.io/forecast/22d9a931630b36afe6057543b3031a61/';
 
 function crawlCities() {
   City.find({}, function(err, cities) {
+    if (err) return console.log(err);
     var counter = 0;
     cities.forEach(function(city) {
       rp(url + city.latitude + "," + city.longitude)
