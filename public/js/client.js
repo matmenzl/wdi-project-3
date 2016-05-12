@@ -1,5 +1,15 @@
 var SunApp = SunApp || {};
 
+SunApp.url;
+
+SunApp.getURL = function(){
+  if (window.location.href.indexOf("localhost") !== -1){
+    SunApp.url = "http://localhost:3000";
+  } else {
+    SunApp.url = "https://sevendaysofsun.herokuapp.com";
+  }
+}
+
 SunApp.nextweek = function(){
   var today = new Date();
   var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
@@ -18,7 +28,8 @@ SunApp.formatDate = function(date) {
 }
 
 SunApp.initialize = function(){
-  $("main").on("submit", "form", this.submitForm);
+  $("main").on("submit", "form.form", this.submitForm);
+  $("main").on("submit", "form#sms-form", this.emailSignup);
   $("header nav a").on("click", this.changePage);
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
@@ -51,7 +62,7 @@ SunApp.getCurrentUser = function() {
     var decodedPayload = jwt_decode(SunApp.getToken());
     return $.ajax({
       method: "GET",
-      url: "http://localhost:3000/api/users/" + decodedPayload._id,
+      url: SunApp.url + "/api/users/" + decodedPayload._id,
       beforeSend: SunApp.setRequestHeader
     }).done(function(data) {
       SunApp.currentUser = data.user;
@@ -62,7 +73,7 @@ SunApp.getCurrentUser = function() {
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   return $.ajax({
     method: method,
-    url: "http://localhost:3000/api" + url,
+    url: SunApp.url + "/api" + url,
     data: data,
     beforeSend: SunApp.setRequestHeader
   }).done(function(data){
@@ -74,8 +85,8 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   });
 }
 
-SunApp.getTemplate = function(tpl, data){
-  var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+SunApp.getTemplate = function(tpl, data, city){
+  var templateUrl = SunApp.url + "/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
     method: "GET",
@@ -86,20 +97,34 @@ SunApp.getTemplate = function(tpl, data){
     $("main").html(compiledTemplate);
     
     // If there is a #map-canvas element on the underscore template, then load the world map
-    if ($("#map-canvas").length > 0) return SunApp.createWorldMap();
+    if ($("#map-canvas").length > 0) {
+      if (city == null) SunApp.createWorldMap();
+      else {
+
+        return SunApp.createCityMap(city);
+      }
+    } 
   }).fail(function(){
     console.error("Did not load template");
   })
 }
 
 SunApp.bindLinkClicks = function() {
+  $("body").on("click", "a.map-city", function() {
+    event.preventDefault();
+    var city = this.id;
+    var tpl = $(this).data("template");
+    var data = { cities: null };
+    return SunApp.getTemplate(tpl, data, city);
+  })
   $("body").on("click", "a.map", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
-  $("body").on("click", "button#favourite-button", this.addFav);
 }
 
-function addFav(){
-  console.log("favourited")
+SunApp.addFav = function(city) {
+  var url = "/users/" + SunApp.currentUser._id + "/favourites";
+  var data = { city: city };
+  return this.ajaxRequest("POST", url, data);
 }
 
 SunApp.userShow = function() {
@@ -180,11 +205,16 @@ SunApp.addInfoWindowForCity = function(city, marker){
       SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
     });
     self.infowindow.open(self.map, this);
+    $("body").on("click", "button#favourite-button", function() {
+      SunApp.addFav(city);
+    })
   })
 }
 
 
+
 SunApp.createMarkerForCity = function(city, timeout, i) {
+
   var self   = this;
   var latlng = new google.maps.LatLng(city.latitude, city.longitude);
     
@@ -200,6 +230,7 @@ window.setTimeout(function(){
 }
 
 SunApp.loopThroughCities = function(data) {
+  console.log(data);
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
       SunApp.createMarkerForCity(city, i*100);
@@ -240,6 +271,34 @@ SunApp.createWorldMap = function() {
   this.limiter();
 }
 
+SunApp.createCityMap = function(cityId) {
+  this.canvas = document.getElementById("map-canvas");
+
+  var mapOptions = {
+    zoom: 6,
+    minZoom: 2,
+    maxZoom: 15,
+    center: new google.maps.LatLng(0, 11.15),
+    disableDefaultUI: true,
+    zoomControl: false,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
+  }
+  SunApp.map = new google.maps.Map(this.canvas, mapOptions);
+
+  var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': cityId }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        SunApp.map.setCenter(results[0].geometry.location);
+      } else {
+        alert("Could not find location: " + location);
+      }
+  });
+
+  SunApp.ajaxRequest("GET", "/cities", null, null, SunApp.loopThroughCities);
+  this.limiter();
+}
+
 SunApp.createSkyscannerWidget = function(origin, destination){
   var snippet   = new skyscanner.snippets.SearchPanelControl();
   var container = document.getElementById("snippet_searchpanel");
@@ -259,7 +318,43 @@ SunApp.createSkyscannerWidget = function(origin, destination){
   snippet.draw(container);
 }
 
+
+SunApp.emailSignup = function() {
+    event.preventDefault();
+    var sms = $('#sms').val();
+    var baseURL = 'https://docs.google.com/a/tages-anzeiger.ch/forms/d/1q-oZ7IS5MinZawIf9xbXj3diAFhhdtJW9ojKaHS3Wio/formResponse';
+    // var submitRef = '&submit=submit';
+    // var submitURL = (baseURL + sms + submitRef);
+    // $(this)[0].action=submitURL;
+    // console.log(submitURL);
+    console.log(sms);
+
+    return $.ajax({
+        method: 'POST',
+        url: baseURL,
+        data: { "entry.1355049609": sms },
+        beforeSend: SunApp.setRequestHeader
+      }).done(function(data){
+        if (typeof callback === "function") return callback(data);
+        SunApp.saveTokenIfPresent(data);
+        if (tpl) SunApp.getTemplate(tpl, data);
+      }).fail(function(data){
+        alert("Error");
+        console.log(data);
+      });
+
+    $('#sms').addClass('active').val('Thank You!');
+    setTimeout(function(){
+      $('#form-container').hide();
+      $('#update-form').animate({'width': '0px'},300,function(){
+        $('#get-updates-link').hide();
+      });
+    },1000); 
+}
+
+
 $(function(){
+  SunApp.getURL();
   SunApp.initialize();
   skyscanner.load("snippets","2");
   SunApp.getCurrentUser();

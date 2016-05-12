@@ -6,6 +6,7 @@ var userSchema = new mongoose.Schema({
   firstName:    { type: String },
   lastName:     { type: String },
   image:        { type: String },
+  favourites:   { type: Array },
   airportCode:  { type: String, required: true },
   username:     { type: String, required: true, unique: true },
   email:        { type: String, required: true, unique: true },

@@ -3,5 +3,8 @@
   <img class="media-object" src="<%= user.image %>">
   <p><%= user.firstName %></p>
   <p><%= user.lastName %></p>
-  <p>"Favorites coming from Ryan"</p>
+  <h3>Sunny Favourites</h3>
+  <% user.favourites.forEach(function(favourite) { %>
+    <a class="map-city" id="<%= favourite.name %>" data-template="map"><%= favourite.name %></a>
+  <% }) %>
 </section>
