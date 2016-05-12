@@ -246,6 +246,7 @@ var url = 'https://api.forecast.io/forecast/22d9a931630b36afe6057543b3031a61/';
 
 function crawlCities() {
   City.find({}, function(err, cities) {
+    var counter = 0;
     cities.forEach(function(city) {
       rp(url + city.latitude + "," + city.longitude)
         .then(function(data) {
@@ -274,6 +275,8 @@ function crawlCities() {
           city.save(function(err, city) {
             if (err) return console.log(err);
             console.log(city.name + " was saved");
+            counter++;
+            if (cities.length === counter) process.exit();
           });
         })
         .catch(function (err) {
