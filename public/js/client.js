@@ -1,5 +1,15 @@
 var SunApp = SunApp || {};
 
+SunApp.url;
+
+SunApp.getURL = function(){
+  if (window.location.href.indexOf("localhost")){
+    SunApp.url = "http://localhost:3000";
+  } else {
+    SunApp.url = "https://sevendaysofsun.herokuapp.com";
+  }
+}
+
 SunApp.nextweek = function(){
   var today = new Date();
   var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
@@ -52,7 +62,7 @@ SunApp.getCurrentUser = function() {
     var decodedPayload = jwt_decode(SunApp.getToken());
     return $.ajax({
       method: "GET",
-      url: "http://localhost:3000/api/users/" + decodedPayload._id,
+      url: SunApp.url + "/api/users/" + decodedPayload._id,
       beforeSend: SunApp.setRequestHeader
     }).done(function(data) {
       SunApp.currentUser = data.user;
@@ -63,7 +73,7 @@ SunApp.getCurrentUser = function() {
 SunApp.ajaxRequest = function(method, url, data, tpl, callback){
   return $.ajax({
     method: method,
-    url: "http://localhost:3000/api" + url,
+    url: SunApp.url + "/api" + url,
     data: data,
     beforeSend: SunApp.setRequestHeader
   }).done(function(data){
@@ -76,7 +86,7 @@ SunApp.ajaxRequest = function(method, url, data, tpl, callback){
 }
 
 SunApp.getTemplate = function(tpl, data){
-  var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+  var templateUrl = SunApp.url + "/templates/" + tpl + ".html";
   $.ajax({
     url: templateUrl,
     method: "GET",
@@ -292,6 +302,7 @@ SunApp.emailSignup = function() {
 
 
 $(function(){
+  SunApp.getURL();
   SunApp.initialize();
   skyscanner.load("snippets","2");
   SunApp.getCurrentUser();
