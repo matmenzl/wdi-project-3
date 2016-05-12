@@ -5,6 +5,7 @@ var router   = express.Router();
 var usersController           = require('../controllers/users');
 var authenticationsController = require('../controllers/authentications');
 var citiesController          = require('../controllers/cities');
+var favouritesController      = require('../controllers/favourites');
 
 // ***** ROUTES ***** //
 router.post('/login', authenticationsController.login);
@@ -19,7 +20,11 @@ router.route('/users/:id')
   .patch(usersController.update)
   .delete(usersController.delete);
 
+router.route("/users/:id/favourites")
+  .post(favouritesController.create)
+
 router.route('/cities')
   .get(citiesController.index)
+
 
 module.exports = router;

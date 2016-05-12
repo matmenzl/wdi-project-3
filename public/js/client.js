@@ -98,9 +98,9 @@ SunApp.bindLinkClicks = function() {
 }
 
 SunApp.addFav = function(city) {
-  console.log(city);
-  var url = SunApp.currentUser.favourites
-  this.ajaxRequest("POST", url, city);
+  var url = "/users/" + SunApp.currentUser._id + "/favourites";
+  var data = { city: city };
+  return this.ajaxRequest("POST", url, data);
 }
 
 SunApp.userShow = function() {
