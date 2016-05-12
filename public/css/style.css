@@ -235,6 +235,7 @@ footer, .push {
 #map #map-canvas {
   width: 100%;
   min-height: 400px;
+  color: #E43E3E;
 }
 
 #map h2 {
@@ -275,3 +276,6 @@ footer, .push {
   height: 200px;
 }
 
+#user.container {
+  text-align:center;
+}

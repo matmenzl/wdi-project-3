@@ -3,8 +3,16 @@
   <img class="media-object" src="<%= user.image %>">
   <p><%= user.firstName %></p>
   <p><%= user.lastName %></p>
+
   <h3>Sunny Favourites</h3>
   <% user.favourites.forEach(function(favourite) { %>
     <a class="map-city" id="<%= favourite.name %>" data-template="map"><%= favourite.name %></a>
   <% }) %>
+  
+  <div>
+  <h2>Get a daily update of sunny spots</h2>
+  <form action="https://tinyletter.com/sevendaysofsun" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/sevendaysofsun', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail">Enter your email address</label></p>
+  <p><input type="text" style="width:140px" name="email" id="tlemail" /></p><input type="hidden" value="1" name="embed"/>
+
+  <button type="submit" class="btn btn-primary" value="Subscribe">Submit</button><p><a href="https://tinyletter.com" target="_blank"></a></p></form> 
 </section>
