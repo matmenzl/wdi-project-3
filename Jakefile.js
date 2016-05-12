@@ -96,6 +96,139 @@ var cities = [
     longitude: 58.502197,
     continent: "Asia",
     airportCode: "MCT"
+  },
+  {
+    name: "Addis Ababa",
+    latitude: 9.011043,
+    longitude: 38.754959,
+    continent: "Africa",
+    airportCode: "ADD"
+  },
+  {
+    name: "Acapulco",
+    latitude: 16.834683, 
+    longitude: -99.912071,
+    continent: "NAmerica",
+    airportCode: "ACA"
+  },
+  {
+    name: "Havana",
+    latitude: 23.098523,
+    longitude: -82.364502,
+    continent: "NAmerica",
+    airportCode: "HAV"
+  },
+  {
+    name: "Perth",
+    latitude: -31.974626,
+    longitude: 115.861816,
+    continent: "Oceania",
+    airportCode: "PER"
+  },
+  {
+    name: "Cairo",
+    latitude: 30.043984,
+    longitude: 31.239624,
+    continent: "Africa",
+    airportCode: "CAI"
+  },
+  {
+    name: "Valencia",
+    latitude: 39.470506,
+    longitude: -0.376282,
+    continent: "Europe",
+    airportCode: "VLC"
+  },
+  {
+    name: "Lisbon",
+    latitude: 38.708487,
+    longitude: -9.181824,
+    continent: "Europe",
+    airportCode: "LIS"
+  },
+  {
+    name: "Ljubljana",
+    latitude: 46.045476,
+    longitude: 14.518433,
+    continent: "Europe",
+    airportCode: "LJU"
+  },
+  {
+    name: "Nairobi",
+    latitude: -1.281345,
+    longitude: 36.815186,
+    continent: "Africa",
+    airportCode: "NBO"
+  },
+  {
+    name: "Lima",
+    latitude: -12.058879,
+    longitude: -77.047119,
+    continent: "SAmerica",
+    airportCode: "LIM"
+  },
+  {
+    name: "Hanoi",
+    latitude: 21.021540,
+    longitude: 105.842285,
+    continent: "Asia",
+    airportCode: "HAN"
+  },
+  {
+    name: "Wellington",
+    latitude: -41.296639,
+    longitude: 174.825439,
+    continent: "Oceania",
+    airportCode: "WLG"
+  },
+  {
+    name: "Bangkok",
+    latitude: 13.693274,
+    longitude: 100.535889,
+    continent: "Asia",
+    airportCode: "BKK"
+  },
+  {
+    name: "Mubai",
+    latitude:19.050273,  
+    longitude: 72.899780,
+    continent: "Asia",
+    airportCode: "BOM"
+  },
+  {
+    name: "Zanzibar",
+    latitude: -6.170977, 
+    longitude:  39.214325,
+    continent: "Africa",
+    airportCode: "ZNZ"
+  },
+  {
+    name: "Austin",
+    latitude: 30.263645,
+    longitude: -97.746048,
+    continent: "NAmerica",
+    airportCode: "AUS"
+  },
+  {
+    name: "Phoenix",
+    latitude: 33.433089,
+    longitude: -112.027588,
+    continent: "NAmerica",
+    airportCode: "PHX"
+  },
+  {
+    name: "Aukland",
+    latitude: -36.880856,
+    longitude: 174.759521,
+    continent: "Oceania",
+    airportCode: "AKL"
+  },
+  {
+    name: "Lagos",
+    latitude: 6.483843,
+    longitude: 3.383789,
+    continent: "Africa",
+    airportCode: "LOS"
   }
 ]
 

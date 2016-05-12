@@ -23,6 +23,7 @@ SunApp.initialize = function(){
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
   SunApp.bindLinkClicks();
+  SunApp.getTemplate("home");
 }
 
 SunApp.removeToken = function(){
@@ -75,8 +76,9 @@ SunApp.getTemplate = function(tpl, data, continent){
     $("main").html(compiledTemplate);
     // If there is a #map-canvas element on the underscore template, then load the world map
     if ($("#map-canvas").length > 0) {
-      if (continent == "world") SunApp.createWorldMap();
-      else {
+      if (continent == "world") {
+        SunApp.createWorldMap();
+      } else {
         return SunApp.createRegionMap(continent);
       }
     }
@@ -90,20 +92,18 @@ SunApp.bindLinkClicks = function() {
 SunApp.linkClick = function() {
   event.preventDefault();
   var continent = this.id;
-  var tpl = $(this).data("template");
-  return SunApp.getTemplate(tpl, null, continent);
+  var tpl  = $(this).data("template");
+  var href = $(this).attr("href");
+  SunApp.ajaxRequest("get", href, null, tpl, function(data){
+    return SunApp.getTemplate(tpl, data, continent);
+  })
+  
 }
 
 SunApp.changePage = function(){
   event.preventDefault();
   var url = $(this).attr("href");
   var tpl = $(this).data("template");
-  if (tpl != "home") {
-    $('body').attr("id", "");
-  } else {
-    $('body').attr("id", "home");
-  }
-
   if (url) return SunApp.ajaxRequest("get", url, null, tpl);
   return SunApp.getTemplate(tpl, null);
 }
@@ -210,7 +210,7 @@ SunApp.createWorldMap = function() {
     maxZoom: 15,
     center: new google.maps.LatLng(0, 11.15),
     disableDefaultUI: true,
-    zoomControl: true,
+    zoomControl: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
   }
@@ -228,7 +228,7 @@ SunApp.createRegionMap = function(continentId) {
     minZoom: 2,
     maxZoom: 15,
     disableDefaultUI: true,
-    zoomControl: true,
+    zoomControl: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#70B8B8"}]}]
   }
