@@ -19,6 +19,7 @@ module.exports = function(passport){
          lastName:  req.body.lastName,
          image:     req.body.image,
          username:  req.body.username,
+         favourites: req.body.favourites,
          airportCode: req.body.airportCode,
          email:     req.body.email,
          password:  req.body.password,

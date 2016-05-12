@@ -99,11 +99,12 @@ SunApp.getTemplate = function(tpl, data, continent){
 SunApp.bindLinkClicks = function() {
   $("body").on("click", "a.map-region", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
-  $("body").on("click", "button#favourite-button", this.addFav);
 }
 
-function addFav(){
-  console.log("favourited")
+SunApp.addFav = function(city) {
+  console.log(city);
+  var url = SunApp.currentUser.favourites
+  this.ajaxRequest("POST", url, city);
 }
 
 SunApp.userShow = function() {
@@ -188,9 +189,11 @@ SunApp.addInfoWindowForCity = function(city, marker){
       SunApp.createSkyscannerWidget(SunApp.currentUser.airportCode, city.airportCode);
     });
     self.infowindow.open(self.map, this);
+    $("body").on("click", "button#favourite-button", function() {
+      SunApp.addFav(city);
+    })
   })
 }
-
 
 SunApp.createMarkerForCity = function(city, timeout) {
   var self   = this;
