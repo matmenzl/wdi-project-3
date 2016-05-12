@@ -232,7 +232,6 @@ window.setTimeout(function(){
 }
 
 SunApp.loopThroughCities = function(data) {
-  console.log(data);
   return $.each(data.cities, function(i, city) {
     if (city.sunny === true) {
       SunApp.createMarkerForCity(city, i*100);
