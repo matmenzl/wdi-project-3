@@ -4,4 +4,12 @@
   <p><%= user.firstName %></p>
   <p><%= user.lastName %></p>
   <p>"Favorites coming from Ryan"</p>
+  <div>
+    <h2>Get a Text when your favourite location gets 7 days of sun</h2>
+    <form id="sms-form" action="" method="post" target="" template="users/show">
+      <input id="sms" type="tel" name="usrtel" placeholder="Your Mobile Number">
+      <button id="sms-submit" type="submit">Send</button>
+      <iframe src="#" id="no-target" name="no-target" style="visibility:hidden;display:none"></iframe> 
+    </form>
+  </div>
 </section>

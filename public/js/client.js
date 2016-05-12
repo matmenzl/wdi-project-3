@@ -18,7 +18,8 @@ SunApp.formatDate = function(date) {
 }
 
 SunApp.initialize = function(){
-  $("main").on("submit", "form", this.submitForm);
+  $("main").on("submit", "form.form", this.submitForm);
+  $("main").on("submit", "form#sms-form", this.emailSignup);
   $("header nav a").on("click", this.changePage);
   $("#logout").on("click", this.logout);
   SunApp.checkLoginState();
@@ -290,6 +291,41 @@ SunApp.createSkyscannerWidget = function(origin, destination){
   snippet.setProduct("carhire","3");
   snippet.draw(container);
 }
+
+
+SunApp.emailSignup = function() {
+    event.preventDefault();
+    var sms = $('#sms').val();
+    var baseURL = 'https://docs.google.com/a/tages-anzeiger.ch/forms/d/1q-oZ7IS5MinZawIf9xbXj3diAFhhdtJW9ojKaHS3Wio/formResponse';
+    // var submitRef = '&submit=submit';
+    // var submitURL = (baseURL + sms + submitRef);
+    // $(this)[0].action=submitURL;
+    // console.log(submitURL);
+    console.log(sms);
+
+    return $.ajax({
+        method: 'POST',
+        url: baseURL,
+        data: { "entry.1355049609": sms },
+        beforeSend: SunApp.setRequestHeader
+      }).done(function(data){
+        if (typeof callback === "function") return callback(data);
+        SunApp.saveTokenIfPresent(data);
+        if (tpl) SunApp.getTemplate(tpl, data);
+      }).fail(function(data){
+        alert("Error");
+        console.log(data);
+      });
+
+    $('#sms').addClass('active').val('Thank You!');
+    setTimeout(function(){
+      $('#form-container').hide();
+      $('#update-form').animate({'width': '0px'},300,function(){
+        $('#get-updates-link').hide();
+      });
+    },1000); 
+}
+
 
 $(function(){
   SunApp.initialize();
