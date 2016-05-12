@@ -13,7 +13,7 @@ div#homepage, #title {
   font-size: 46px;
   font-weight: bold;
   color:#70B8B8;
-  padding:5px;
+  padding:5px 5px 20px 5px;
 }
 
 #map-canvas {
@@ -29,6 +29,7 @@ div#homepage, #title {
   margin: 0 auto;
   margin-top:50px;
   text-align:center;
+  padding: 0;
 }
 
 
@@ -190,4 +191,26 @@ div.media{
 
 .form-control::-webkit-input-placeholder {
 color:#70B8B8;
+}
 
+body#bottom {
+  width:100%;
+  height:400px;
+}
+
+.jumbotron {
+  display:inline-block;
+  width:40%;
+  background: rgba(0, 188, 212, 0.3);
+  border-radius: 2%;
+  margin: 25px;
+  color:white;
+}
+
+.container .jumbotron, .container-fluid .jumbotron {
+  border-radius:0px;
+}
+
+.fa-user:before {
+  color:#70B8B8;
+}
