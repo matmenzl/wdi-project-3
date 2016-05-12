@@ -5,6 +5,13 @@
   <p><%= user.lastName %></p>
   <p>"Favorites coming from Ryan"</p>
   <div>
+  <h2>Get a daily update of sunny spots</h2>
+  <form action="https://tinyletter.com/sevendaysofsun" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/sevendaysofsun', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail">Enter your email address</label></p>
+  <p><input type="text" style="width:140px" name="email" id="tlemail" /></p><input type="hidden" value="1" name="embed"/>
+
+  <button type="submit" class="btn btn-primary" value="Subscribe">Submit</button><p><a href="https://tinyletter.com" target="_blank"></a></p></form> 
+  <div>
+  
     <h2>Get a Text when your favourite location gets 7 days of sun</h2>
     <form id="sms-form" action="" method="post" target="" template="users/show">
       <input id="sms" type="tel" name="usrtel" placeholder="Your Mobile Number">

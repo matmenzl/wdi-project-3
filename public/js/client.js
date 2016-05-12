@@ -279,6 +279,7 @@ SunApp.emailSignup = function() {
 
     return $.ajax({
         method: 'POST',
+        dataType: 'jsonp',
         url: baseURL,
         data: { "entry.1355049609": sms },
         beforeSend: SunApp.setRequestHeader
