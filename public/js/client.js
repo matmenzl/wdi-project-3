@@ -119,6 +119,8 @@ SunApp.bindLinkClicks = function() {
   })
   $("body").on("click", "a.map", this.linkClick);
   $("body").on("click", "a.user", this.userShow);
+  $("body").on("click", "p a#register", this.changePage);
+  $("body").on("click", "p a#hunt-the-sun", this.linkClick);
 }
 
 SunApp.addFav = function(city) {
