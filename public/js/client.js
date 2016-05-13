@@ -59,7 +59,8 @@ SunApp.saveTokenIfPresent = function(data){
 
 SunApp.getCurrentUser = function() {
   if (SunApp.getToken() && !SunApp.currentUser) {
-    var decodedPayload = jwt_decode(SunApp.getToken());
+    var token = SunApp.getToken();
+    var decodedPayload = jwt_decode(token);
     return $.ajax({
       method: "GET",
       url: SunApp.url + "/api/users/" + decodedPayload._id,
