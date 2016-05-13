@@ -1,6 +1,6 @@
 # wdi-project-3
 
-![7 Days of Sun](https://github.com/matmenzl/wdi-project-3/blob/master/app/public/images/README.png?raw=true)
+![7 Days of Sun](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/README.png?raw=true)
 
 [Link to the Website:](https://sevendaysofsun.herokuapp.com)
 
@@ -36,8 +36,8 @@
 ### Project-Setup
 + Clickable Wireframes with Balsamiq
 + Project-Planning with Trello
-[file.pdf](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/7daysofsun.pdf)
-![Trello](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/trello_project_3.png?raw=true)
+[file.pdf](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/7daysofsun.pdf)
+![Trello](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/trello_project_3.png?raw=true)
 
 ###Credits
 
