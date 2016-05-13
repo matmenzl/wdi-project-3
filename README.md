@@ -1,8 +1,8 @@
 # wdi-project-3
 
-![7 Days of Sun](https://github.com/matmenzl/wdi-project-2/blob/master/app/assets/images/README.png?raw=true)
+![7 Days of Sun](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/README.png?raw=true)
 
-[Link to the Website:](https://7daysofsun.herokuapp.com)
+[Link to the Website:](https://sevendaysofsun.herokuapp.com)
 
 # About
 '7 Days of Sun' is a last minute travel and weather-report JavaScript Single Page Application which shows only sunny locations in the coming 7 days.   
@@ -36,8 +36,8 @@
 ### Project-Setup
 + Clickable Wireframes with Balsamiq
 + Project-Planning with Trello
-[file.pdf](https://github.com/matmenzl/wdi-project-2/blob/master/app/assets/images/7daysofsun.pdf)
-![Trello](https://github.com/matmenzl/wdi-project-2/blob/master/app/assets/images/trello_project_3.png?raw=true)
+[file.pdf](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/7daysofsun.pdf)
+![Trello](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/trello_project_3.png?raw=true)
 
 ###Credits
 
