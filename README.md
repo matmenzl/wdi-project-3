@@ -17,7 +17,7 @@
 + '7 Days of Sun' uses the JavaScript API from Google Maps to show the sunny locations. 
 + '7 Days of Sun' uses the forecast.io API in order to get the sunny spots within the coming 7 days.
 + '7 Days of Sun' uses a Skyscanner-Plugin in order to make last minute bookings. 
-+ Users are able to register and login and can save their favourites in order to check back if they are sunny or not and if it's worth to book or not.
++ Users are able to register and login and can save their favourites in order to check at a later date if they are sunny.
 + '7 Days of Sun' offers a daily newsletter which sends you daily updates on sunny spots using Tinyletter.com.
 
 ### Technologies
@@ -42,7 +42,7 @@
 ###Credits
 
 + '7 Days of Sun' by Ryan, Alistair and Mathias 
-+ '7 Days of Sun' wouldn't have been possible without the vast coding knowledge of GA Teachers Alex, Caroline and Oli
++ '7 Days of Sun' wouldn't have been possible without the vast coding knowledge of GA Teachers Alex, Caroline and Ollie.
 
 Feel free to comment and fork.
 
