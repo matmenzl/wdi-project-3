@@ -279,7 +279,8 @@ function crawlCities() {
           var clearWeather = [
             "clear-day", 
             "clear-night", 
-            "partly-cloudy-night"
+            "partly-cloudy-night",
+            "partly-cloudy-day"
           ];
 
           var i = 0;
