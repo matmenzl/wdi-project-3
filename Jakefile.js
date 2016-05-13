@@ -229,6 +229,20 @@ var cities = [
     longitude: 3.383789,
     continent: "Africa",
     airportCode: "LOS"
+  },
+  {
+    name: "Alice Springs",
+    latitude: -23.699413,
+    longitude: 133.873215,
+    continent: "Oceania",
+    airportCode: "ASP"
+  },
+  {
+    name: "Lanzarote",
+    latitude: 28.988247,
+    longitude: -13.699951,
+    continent: "Europe",
+    airportCode: "ACE"
   }
 ]
 
