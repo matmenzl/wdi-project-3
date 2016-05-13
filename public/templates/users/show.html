@@ -5,9 +5,10 @@
   <p><%= user.firstName %></p>
   <p><%= user.lastName %></p>
 
-  <h3>Sunny Favourites</h3>
+
+  <h3><%= user.firstName %>'s Favourites</h3>
   <% user.favourites.forEach(function(favourite) { %>
-    <a class="map-city" id="<%= favourite.name %>" data-template="map"><%= favourite.name %></a>
+    <a class="map-city" id="<%= favourite.name %>" data-template="map"><button class="btn btn-success"><%= favourite.name %></button></a>
   <% }) %>
   
   <div>
