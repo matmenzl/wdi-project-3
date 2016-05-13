@@ -22,7 +22,7 @@
 
 ### Technologies
 
-'Meet Your Street' is built with Ruby on Rails with some help from:
+'7 Days of Sun' is built with Ruby on Rails with some help from:
 
 + JavaScript
 + jQuery
