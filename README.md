@@ -37,7 +37,7 @@
 + Clickable Wireframes with Balsamiq
 + Project-Planning with Trello
 [file.pdf](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/7daysofsun.pdf)
-![Trello](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/trello_project_3.png?raw=true)
+![Trello](https://github.com/matmenzl/wdi-project-3/blob/master/public/images/trello_project_4.png?raw=true)
 
 ###Credits
 
