@@ -1,6 +1,6 @@
 # wdi-project-3
 
-![7 Days of Sun](https://github.com/matmenzl/wdi-project-3/blob/master/app/assets/images/README.png?raw=true)
+![7 Days of Sun](https://github.com/matmenzl/wdi-project-3/blob/master/app/public/images/README.png?raw=true)
 
 [Link to the Website:](https://sevendaysofsun.herokuapp.com)
 
