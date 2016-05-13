@@ -264,6 +264,10 @@ footer, .push {
   font-weight:bold;
 }
 
+#center-button {
+  text-align: center;
+}
+
 /**** users ****/
 
 #users h2 {
